@@ -1,0 +1,15 @@
+{
+    "name": "Cake",
+    "alias": "cake",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Cake\\Providers\\CakeServiceProvider"
+    ],
+    "aliases":{},
+    "files": [
+        "start.php"
+    ]
+}
