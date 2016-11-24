@@ -7,7 +7,7 @@ use Modules\Category\Entities\Category;
 
 class Cake extends Model
 {
-    protected $fillable = ['name', 'description', 'category_id', '10pcs_price', '20pcs_price'];
+    protected $fillable = ['name', 'image', 'description', 'category_id', '10pcs_price', '20pcs_price'];
 
     public function category()
     {

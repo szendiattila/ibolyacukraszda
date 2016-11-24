@@ -1,8 +1,8 @@
 <?php
 
-Route::group(['middleware' => ['web', 'dashboard'], 'prefix' => 'dashboard/cake', 'namespace' =>
-    'Modules\Cake\Http\Controllers'],
+Route::group(['middleware' => ['web', 'dashboard'], 'prefix' => 'dashboard', 'namespace' =>
+    'Modules\Cake\Http\Controllers\Dashboard'],
     function()
 {
-    Route::get('/', 'CakeController@index');
+    Route::resource('/cake', 'CakeController');
 });

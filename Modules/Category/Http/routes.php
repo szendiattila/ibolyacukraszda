@@ -1,6 +1,7 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'category', 'namespace' => 'Modules\Category\Http\Controllers'], function()
+Route::group(['middleware' => 'web', 'prefix' => 'dashboard', 'namespace' =>
+    'Modules\Category\Http\Controllers\Dashboard'], function()
 {
-    Route::get('/', 'CategoryController@index');
+    Route::resource('/category', 'CategoryController');
 });

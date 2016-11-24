@@ -1,10 +1,11 @@
 <?php
 
-namespace Modules\Category\Http\Controllers;
+namespace Modules\Category\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Category\Entities\Category;
 
 class CategoryController extends Controller
 {
@@ -14,7 +15,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('category::index');
+        $categories = Category::paginate();
+
+        return view('category::dashboard.index', compact('categories'));
     }
 
     /**
@@ -23,7 +26,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category::create');
+        return view('category::dashboard.create');
     }
 
     /**
@@ -33,31 +36,43 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        Category::create($request->all());
+
+        return redirect('dashboard/category');
     }
 
     /**
      * Show the form for editing the specified resource.
+     * @param Category $category
      * @return Response
      */
-    public function edit()
+    public function edit(Category $category)
     {
-        return view('category::edit');
+        return view('category::dashboard.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      * @param  Request $request
+     * @param Category $category
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Category $category, Request $request)
     {
+        $category->update($request->all());
+
+        return redirect('dashboard/category');
     }
 
     /**
      * Remove the specified resource from storage.
+     * @param Category $category
      * @return Response
      */
-    public function destroy()
+    public function destroy(Category $category)
     {
+        $category->delete();
+
+        return redirect('dashboard/category');
     }
 }
