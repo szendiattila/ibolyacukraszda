@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
+use Illuminate\Support\Facades\Log;
 use Image;
 
-class FileUpload extends Controller
+class FileUploadController extends Controller
 {
     public static function storeImage(Request $request, $fileName, $folderName, $thumbFile = false, $thumbWidth = 90, $thumbHeight = 90)
     {
@@ -22,10 +24,10 @@ class FileUpload extends Controller
 
             if ($thumbFile) {
 
-                $name = 'tn-' . $name;
+                $nameThumb = 'tn-' . $name;
 
                 $thumb = Image::make($request->file($fileName)->getRealPath());
-                $thumb->resize($thumbWidth, $thumbHeight)->save('images/' . $folderName . '/' . $name);
+                $thumb->resize($thumbWidth, $thumbHeight)->save('images/' . $folderName . '/' . $nameThumb);
 
 
             }
@@ -35,5 +37,19 @@ class FileUpload extends Controller
 
 
         return null;
+    }
+
+
+    public static function removeFile($fileName, $folderName, $shouldRemoveThumb = false)
+    {
+        try {
+            unlink('images/' . $folderName . '/' . $fileName);
+
+            if ($shouldRemoveThumb) {
+                unlink('images/' . $folderName . '/tn-' . $fileName);
+            }
+        } catch (\Exception $e) {
+            //
+        }
     }
 }

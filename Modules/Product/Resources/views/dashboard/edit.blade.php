@@ -3,7 +3,7 @@
 @section('content')
     <h1>Torta módosítása</h1>
 
-    {{ Form::model($product,['url' => ['dashboard/cake', $product],'method' => 'patch', 'files' => 'true']) }}
+    {{ Form::model($product,['url' => ['dashboard/product', $product],'method' => 'patch', 'files' => 'true']) }}
 
-    @include('cake::dashboard.partials._form', ['submitButton' => 'Módosítás'])
+    @include('product::dashboard.partials._form', ['submitButton' => 'Módosítás'])
 @stop

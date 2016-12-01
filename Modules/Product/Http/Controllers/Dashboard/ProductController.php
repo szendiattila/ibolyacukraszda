@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Product\Http\Controllers;
+namespace Modules\Product\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\FileUploadController;
 use Illuminate\Http\Request;
-use App\Http\Controllers\FileUpload;
 use Illuminate\Routing\Controller;
 use Modules\Category\Entities\Category;
 use Modules\Product\Entities\Product;
@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->paginate();
+        $products = Product::with('category')->paginate(2);
 
         return view('product::dashboard.index', compact('products'));
     }
@@ -27,7 +27,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $imageName = FileUpload::storeImage($request, 'image', 'product', true, 200, 200);
+        $imageName = FileUploadController::storeImage($request, 'image', 'product', true, 200, 200);
 
         $request->request->add(['image' => $imageName]);
         Product::create(
@@ -37,22 +37,41 @@ class ProductController extends Controller
         return redirect('dashboard/product');
     }
 
-    public function edit()
+    public function edit($id)
     {
         $categories = Category::pluck('name', 'id');
+        $product = Product::findOrFail($id);
 
-        return view('product::dashboard.edit', compact('categories'));
+
+        return view('product::dashboard.edit', compact('product', 'categories'));
     }
 
     public function update(Product $product, Request $request)
     {
-        $product->update($request->all());
+
+        if ($request->file('image')) {
+            $oldImageName = Product::find($product->id)->image;
+
+
+            $newImageName = FileUploadController::storeImage($request, 'image', 'product', true);
+
+
+            $request->request->add(['image' => $newImageName]);
+
+        }
+
+//       dd($oldImageName, $product->image, $request->get('image'), $request->input());
+
+        $product->update($request->input());
+
+        (isset($oldImageName)) ? FileUploadController::removeFile($oldImageName, 'product', true) : null;
 
         return redirect('dashboard/product');
     }
 
     public function destroy(Product $product)
     {
+        FileUploadController::removeFile($product->image, 'product', true);
         $product->delete();
 
         return redirect('dashboard/product');
