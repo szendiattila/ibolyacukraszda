@@ -42,7 +42,6 @@ class ProductController extends Controller
             echo $e->getMessage();
         }
 
-
         return redirect('dashboard/product');
     }
 
