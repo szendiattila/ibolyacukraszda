@@ -7,10 +7,10 @@ use Modules\Category\Entities\Category;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'image', 'description', 'category_id', '_10pcs_price', '_20pcs_price'];
+    protected $fillable = ['name', 'image', 'description', '_10pcs_price', '_20pcs_price'];
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'category_product');
     }
 }

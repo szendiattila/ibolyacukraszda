@@ -30,9 +30,18 @@ class ProductController extends Controller
         $imageName = FileUploadController::storeImage($request, 'image', 'product', true, 200, 200);
 
         $request->request->add(['image' => $imageName]);
-        Product::create(
-            $request->input()
-        );
+
+        try {
+            $product = Product::create(
+                $request->input()
+            );
+
+
+            $product->categories()->sync([$request->input('category_id')]);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
+
 
         return redirect('dashboard/product');
     }
