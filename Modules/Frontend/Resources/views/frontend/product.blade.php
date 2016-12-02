@@ -4,17 +4,18 @@
 
     @if(count($categories) > 0)
 
-        <div class="content-cake">
 
-            @foreach($categories as $category)
+        @foreach($categories as $category)
+            <div class="content-cake">
                 <div class="well">{{$category->name}}</div>
                 <p class="category-detail">{{$category->description_above}}</p>
 
+                <div class="cake-container">
 
-                @foreach($category->products as $product)
+                    @foreach($category->products as $product)
 
 
-                    <div class="cake-container">
+
                         <div class="cake" id="product-{{$product->id}}">
                             <div class="cake-header">
                                 {{$product->name}}
@@ -24,28 +25,28 @@
                                 <img src="images/product/{{$product->image}}" class="cake-img">
 
                             </div>
-                            <div style="display: none">
-                                {{$product->description}}
-                                10 szeletes ára:
-                                {{$product->_10pcs_price}}
-                                20 szeletes ára:
-                                {{$product->_20pcs_price}}
+                            {{--<div style="display: none">--}}
+                            {{--{{$product->description}}--}}
+                            {{--10 szeletes ára:--}}
+                            {{--{{$product->_10pcs_price}}--}}
+                            {{--20 szeletes ára:--}}
+                            {{--{{$product->_20pcs_price}}--}}
 
-                                <button class="btn alert-success">Megrendelés</button>
-                            </div>
+                            {{--<button class="btn alert-success">Megrendelés</button>--}}
+                            {{--</div>--}}
 
                         </div>
 
-                    </div>
 
 
 
-                @endforeach
+                    @endforeach
 
+                </div>
                 <p class="category-detail">{{$category->description_above}}</p>
 
-            @endforeach
-        </div>
+            </div>
+        @endforeach
 
     @else
 
