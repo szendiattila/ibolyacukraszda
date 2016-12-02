@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'title_prefix' => 'Ibolya Cukrászda - '
+    'title_prefix' => 'Ibolya Cukrászda - ',
+    'currency' => ' ,- Ft'
 ];

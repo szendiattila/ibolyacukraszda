@@ -2,21 +2,25 @@
 
 namespace Modules\Frontend\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Category\Entities\Category;
 
 class FrontendController extends Controller
 {
-
-    public function products()
+    public function index()
     {
-
         $categories = Category::all();
 
         dd($categories);
 
+        return view('frontend::frontend.product');
+    }
+
+    public function products()
+    {
+        $categories = Category::all();
+
+        dd($categories);
 
         return view('frontend::frontend.product');
     }

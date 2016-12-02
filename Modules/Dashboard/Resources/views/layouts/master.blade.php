@@ -21,9 +21,10 @@
     </script>
 </head>
 <body>
-<div class="container-fluid">
+    @include('dashboard::layouts.partials._navbar')
+            <div class="container">
     @yield('content')
-</div>
+            </div>
 
 <!-- Scripts -->
 <script src="/js/app.js"></script>

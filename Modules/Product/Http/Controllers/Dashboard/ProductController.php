@@ -13,7 +13,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->paginate(2);
+        $products = Product::with('categories')->paginate();
 
         return view('product::dashboard.index', compact('products'));
     }
@@ -31,58 +31,61 @@ class ProductController extends Controller
 
         $request->request->add(['image' => $imageName]);
 
-        try {
-            $product = Product::create(
-                $request->input()
-            );
+        $product = Product::create($request->input());
 
-
-            $product->categories()->sync([$request->input('category_id')]);
-        } catch (\Exception $e) {
-            echo $e->getMessage();
-        }
+        $product->categories()->sync($request->input('category_list'));
 
         return redirect('dashboard/product');
     }
 
-    public function edit($id)
+    public function edit(Product $product)
     {
         $categories = Category::pluck('name', 'id');
-        $product = Product::findOrFail($id);
-
 
         return view('product::dashboard.edit', compact('product', 'categories'));
     }
 
     public function update(Product $product, Request $request)
     {
-
-        if ($request->file('image')) {
-            $oldImageName = Product::find($product->id)->image;
-
-
-            $newImageName = FileUploadController::storeImage($request, 'image', 'product', true);
-
-
-            $request->request->add(['image' => $newImageName]);
-
-        }
-
-//       dd($oldImageName, $product->image, $request->get('image'), $request->input());
+        $this->handleImage($product, $request);
 
         $product->update($request->input());
 
-        (isset($oldImageName)) ? FileUploadController::removeFile($oldImageName, 'product', true) : null;
+        $product->categories()->sync($request->input('category_list'));
 
         return redirect('dashboard/product');
     }
 
     public function destroy(Product $product)
     {
-        FileUploadController::removeFile($product->image, 'product', true);
+        $this->deleteImage($product);
+
         $product->delete();
 
         return redirect('dashboard/product');
+    }
+
+    /**
+     * @param Product $product
+     * @param Request $request
+     */
+    private function handleImage(Product $product, Request $request)
+    {
+        if ($request->file('image')) {
+            $this->deleteImage($product);
+
+            $newImageName = FileUploadController::storeImage($request, 'image', 'product', true);
+
+            $request->request->add(['image' => $newImageName]);
+        }
+    }
+
+    /**
+     * @param Product $product
+     */
+    private function deleteImage(Product $product)
+    {
+        FileUploadController::removeFile($product->image, 'product', true);
     }
 
 

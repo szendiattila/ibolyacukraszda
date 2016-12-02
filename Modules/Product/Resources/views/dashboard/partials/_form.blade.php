@@ -4,8 +4,8 @@
 </div>
 
 <div class="form-group">
-    {{ Form::label('description', 'Termék kategória') }}
-    {{ Form::select('category_id', $categories, null, ['class' => 'form-control', 'placeholder' => 'Válaszd ki a torta kategóriáját...', 'required']) }}
+    {{ Form::label('category_list', 'Termék kategória') }}
+    {{ Form::select('category_list[]', $categories, null, ['class' => 'form-control', 'placeholder' => 'Válaszd ki a torta kategóriáját...', 'required']) }}
 </div>
 
 <div class="form-group">

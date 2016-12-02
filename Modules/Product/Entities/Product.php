@@ -11,6 +11,11 @@ class Product extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_product');
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function getCategoryListAttribute()
+    {
+        return $this->categories->pluck('id')->all();
     }
 }

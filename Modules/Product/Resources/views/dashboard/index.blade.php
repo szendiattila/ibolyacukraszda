@@ -1,8 +1,8 @@
 @extends('dashboard::layouts.master')
 @include('dashboard::layouts.partials._confirmation')
 @php
-    $modul = 'product';
-    $newString = 'Termék';
+$modul = 'product';
+$newString = 'Termék';
 @endphp
 @section('title', config('ibolya.title_prefix') . 'Tortakezelő')
 
@@ -27,16 +27,20 @@
             </thead>
             <tbody>
             @php
-                $counter = 0;
+            $counter = 0;
             @endphp
             @foreach($products as $product)
                 <tr>
                     <td><a href="product/{{ $product->id }}/edit">{{ ++$counter }}</a></td>
                     <td>{{ $product->name }}</td>
-                    <td>{{ $product->category->name }}</td>
-                    <td>{{$product->description}}</td>
-                    <td>{{$product->_10pcs_price}}</td>
-                    <td>{{$product->_20pcs_price}}</td>
+                    <td>
+                        @foreach($product->categories as $category)
+                            {{ $category->name }}
+                        @endforeach
+                    </td>
+                    <td>{{ $product->description}}</td>
+                    <td>{{ $product->_10pcs_price . config('ibolya.currency') }}</td>
+                    <td>{{ $product->_20pcs_price . config('ibolya.currency') }}</td>
                     <td><img src="{{asset('images/product/tn-'.$product->image)}}" height="50px"></td>
                     <td>{{ $product->created_at }} - {{ $product->created_at->diffForHumans() }}</td>
                     <td>{{ $product->updated_at }} - {{ $product->updated_at->diffForHumans() }}</td>
@@ -55,6 +59,6 @@
 
     </div>
     <div class="col-md-4 col-md-offset-4">
-        {{$products->render()}}
+        {{ $products->render() }}
     </div>
 @stop
