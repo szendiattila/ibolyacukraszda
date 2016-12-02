@@ -9,11 +9,12 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
 
-        dd($categories);
 
-        return view('frontend::frontend.product');
+        $categories = Category::with('products')->whereHas('products')->get();
+
+
+        return view('frontend::frontend.product', compact('categories'));
     }
 
     public function products()
