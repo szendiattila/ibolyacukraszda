@@ -4,6 +4,7 @@ namespace Modules\Frontend\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Modules\Category\Entities\Category;
+use Modules\Product\Entities\Product;
 
 class FrontendController extends Controller
 {
@@ -13,6 +14,7 @@ class FrontendController extends Controller
 
         $categories = Category::with('products')->whereHas('products')->get();
 
+        //dd($categories, Category::all(),Product::all());
 
         return view('frontend::frontend.product', compact('categories'));
     }

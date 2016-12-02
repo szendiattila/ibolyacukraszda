@@ -22,7 +22,8 @@
                             </div>
 
                             <div>
-                                <img src="images/product/{{$product->image}}" class="cake-img">
+                                {{--<img src="images/product/{{$product->image}}" class="cake-img">--}}
+                                <img src="{{$product->image}}" class="cake-img">
 
                             </div>
                             {{--<div style="display: none">--}}
