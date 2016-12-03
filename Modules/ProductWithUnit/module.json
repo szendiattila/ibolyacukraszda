@@ -1,0 +1,15 @@
+{
+  "name": "ProductWithUnit",
+  "alias": "productwithunit",
+  "description": "",
+  "keywords": [],
+  "active": 1,
+  "order": 0,
+  "providers": [
+    "Modules\\ProductWithUnit\\Providers\\ProductWithUnitServiceProvider"
+  ],
+  "aliases": {},
+  "files": [
+    "start.php"
+  ]
+}

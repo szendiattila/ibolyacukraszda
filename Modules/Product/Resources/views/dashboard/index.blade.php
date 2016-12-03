@@ -27,11 +27,11 @@ $newString = 'Termék';
             </thead>
             <tbody>
             @php
-            $counter = 0;
+                $productCounter = 0;
             @endphp
             @foreach($products as $product)
                 <tr>
-                    <td><a href="product/{{ $product->id }}/edit">{{ ++$counter }}</a></td>
+                    <td><a href="product/{{ $product->id }}/edit">{{ ++$productCounter }}</a></td>
                     <td>{{ $product->name }}</td>
                     <td>
                         @foreach($product->categories as $category)

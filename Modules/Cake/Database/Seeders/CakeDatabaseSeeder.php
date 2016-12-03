@@ -19,6 +19,7 @@ class CakeDatabaseSeeder extends Seeder
 
         // $this->call("OthersTableSeeder");
 
+        /*
         $faker = \Faker\Factory::create();
 
         for ($i = 0; $i < 50; $i++) {
@@ -29,6 +30,8 @@ class CakeDatabaseSeeder extends Seeder
                 'category_id' => $faker->numberBetween(1, 10),
             ]);
         }
+
+        */
 
     }
 }
