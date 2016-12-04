@@ -3,10 +3,11 @@
 namespace Modules\Frontend\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Mail;
 use Modules\Category\Entities\Category;
 use Modules\Product\Entities\Product;
 use Modules\ProductWithUnit\Entities\RegularProduct;
-use Modules\ProductWithUnit\Entities\Unit;
+use Illuminate\Http\Request;
 
 class FrontendController extends Controller
 {
@@ -49,6 +50,18 @@ class FrontendController extends Controller
         return view('frontend::frontend.sweetShop');
     }
 
+    public function orderForm($id, $quantity)
+    {
+        dd($id, $quantity);
+
+        //email küldés
+
+
+        //felugró ablak legyen a rendelés sikerességéről?
+        return view('frontend::frontend.order');
+    }
+
+
     public function order()
     {
 
@@ -56,7 +69,39 @@ class FrontendController extends Controller
 
 
         //felugró ablak legyen a rendelés sikerességéről?
-        return view('frontend::frontend.product');
+        return view('frontend::frontend.order');
+    }
+
+    public function orderAjax(Request $request)
+    {
+        $product = $request->get('product', 'no product');
+        $quantity = $request->get('quantity', 'no quantity');
+        $email = $request->get('email', 'no email');
+
+
+        $data = ['product' => $product, 'quantity' => $quantity];
+
+
+        Mail::send('frontend::emails.order', $data, function ($message) use ($email) {
+            $message->from('ibolya@examplee.come', 'Laravel');
+
+            $message->to($email); //->cc('bar@example.com');
+
+            // $message->attach($pathToFile);
+        });
+    }
+
+
+    public function getProductById($id, $type)
+    {
+
+        if ($type == 0) {
+            $product = Product::find($id);
+        } else {
+            $product = RegularProduct::with('unit')->whereId($id)->get();
+        }
+
+        return $product;
     }
 
 
