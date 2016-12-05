@@ -8,11 +8,15 @@ use Modules\Category\Entities\Category;
 use Modules\Product\Entities\Product;
 use Modules\ProductWithUnit\Entities\RegularProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class FrontendController extends Controller
 {
     public function index()
     {
+
+
+        //dd(Config::get('mail'));
 
 
         $categories = Category::with('products')->whereHas('products')->get();
@@ -77,18 +81,25 @@ class FrontendController extends Controller
         $product = $request->get('product', 'no product');
         $quantity = $request->get('quantity', 'no quantity');
         $email = $request->get('email', 'no email');
+        $name = $request->get('name', 'no name');
+        $comment = $request->get('comment');
 
 
-        $data = ['product' => $product, 'quantity' => $quantity];
+        $data = ['product' => $product, 'quantity' => $quantity, 'name' => $name, 'comment' => $comment, 'email' => $email];
+
+        return $data;
 
 
-        Mail::send('frontend::emails.order', $data, function ($message) use ($email) {
-            $message->from('ibolya@examplee.come', 'Laravel');
+        return Mail::send('frontend::emails.order', $data, function ($message) use ($email) {
+            $message->from('ibolya@examplee.come', 'Laravel')
+                ->subject('Ibolya cukrászda rendelés');
 
             $message->to($email); //->cc('bar@example.com');
 
             // $message->attach($pathToFile);
         });
+
+
     }
 
 

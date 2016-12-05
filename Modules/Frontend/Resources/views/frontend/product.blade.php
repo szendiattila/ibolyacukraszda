@@ -99,7 +99,7 @@
                         <td>{{$regularProduct->price}}.-{{$regularProduct->unit->unit}}</td>
                         <td>
                             <div class="row">
-                                {{ Form::number('quantity', null, ['class' => 'form-control', 'placeholder' => 'Írja be a mennyiséget.',
+                                {{ Form::number('quantity', 1, ['class' => 'form-control', 'placeholder' => 'Írja be a mennyiséget.',
                                 'min' => 1, 'max' => 999999, 'step' => 1, 'id' => 'inp_'.$productCounter]) }}
                                 {{$regularProduct->unit->order_unit}}
                             </div>
@@ -126,15 +126,48 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Rendelés</h4>
                     </div>
-                    <div class="modal-body">
-                        <label>Email cím:</label><input type="text" name="email" id="modal-email" value=""><br>
-                        <label>Email megjegyzése, a további megrendelések felgyorsításához:</label>
-                        <input type="checkbox" name="email-remember" id="modal-email-remember" value="false"><br>
+                    <div class="modal-body form-group">
+                        <label>Email cím:</label>
+                        <input type="text" name="email" id="modal-email" value="" class="form-control">
+                        <div id="modal-email-error" style="display: none;" class="alert-danger">
+                            Nem megfelelő email cím!
+                        </div>
+                    </div>
+
+                    <div class="modal-body form-group">
+                        <label>Név:</label>
+                        <input type="text" name="name" id="modal-name" value="" class="form-control">
+                        <div id="modal-name-error" style="display: none;" class="alert-danger">
+                            Adja meg a nevét kérem!
+                        </div>
+                    </div>
+
+                    <div class="modal-body form-group">
+                        <label>Megjegyzés:</label>
+                        <input type="text" name="comment" id="modal-comment" value="" class="form-control">
+                    </div>
+
+                    <div class="modal-body form-group">
+                        <label>Mennyiség:</label>
+                        <input type="number" name="quantity" id="modal-quantity" class="form-control" value="1" min="1"
+                               step="1" max="999999">
+                        <div id="modal-quantity-error" style="display: none;" class="alert-danger">
+                            A mennyiségnek pozitív számjegynek kell lennie
+                        </div>
+                    </div>
+
+                    <div class="modal-body form-group">
+                        <label>Email és Név megjegyzése, a további megrendelések felgyorsításához:</label>
+                        <input type="checkbox" name="order-data-remember" id="modal-order-data-remember" value="false"
+                               class=""><br>
+                    </div>
+
+                    <div class="modal-body form-group">
                         <label>Rendelés adatai:</label>
                         <div id="modal-order-description"></div>
-                        <br>
-
                     </div>
+
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-success" data-dismiss="modal" id="modal-order-btn">Rendelés
                             leadása
@@ -156,7 +189,7 @@
 
 @section('scripts')
     @parent
-
+    <script src="{{asset('modules/frontend/js/js.cookie.js')}}"></script>
     <script>
 
         $(function () {
@@ -169,6 +202,10 @@
 
 
                 // $('#myModal').dialog('open');
+
+                $('#modal-email-error').hide();
+                $('#modal-name-error').hide();
+                $('#modal-quantity-error').hide();
 
                 console.log(this.id);
 
@@ -196,6 +233,7 @@
 
                         $('#modal-order-description').html(orderDescription);
 
+                        $('#modal-quantity').val(inp);
                         //$('#myModal').dialog('open');
                         $('#myModal').modal('show');
 
@@ -209,20 +247,11 @@
 
             $('#modal-order-btn').on('click', function () {
 
-                var email = $('#modal-email').val();
+                if (validateInputs()) {
 
-                if ($.trim(email).length == 0) {
+                    var successOrder = sendOrder(actualProduct);
 
-                    alert('Please enter valid email address');
-
-                    return false;
-                }
-
-                if (validateEmail(email)) {
-
-                    alert('Email is valid');
-
-                    var successOrder = sendOrder(actualProduct, inp, email);
+                    console.log('rendelés sikeressége: ' + successOrder);
                     if (successOrder) {
 
                         alert('Sikeres rendelés');
@@ -233,24 +262,75 @@
                         return false;
                     }
 
-                }
-
-                else {
-
-                    alert('Invalid Email Address');
-
-                    return false;
 
                 }
+
+
+                return false;
 
 
             });
 
 
+            $('#modal-quantity').keyup(function () {
+                var orderDescription = orderProductText(actualProduct, $('#modal-quantity').val());
+                $('#modal-order-description').html(orderDescription);
+            });
+
+
         });
 
+        function validateInputs() {
 
-        function sendOrder(product, quantity, email) {
+            var result = true;
+
+            var email = $('#modal-email').val();
+
+            if ($.trim(email).length == 0) {
+                result = false;
+                $('#modal-email-error').show();
+            }
+            else {
+
+                if (validateEmail(email)) {
+                    $('#modal-email-error').hide();
+                }
+                else {
+
+                    result = false;
+                    $('#modal-email-error').show();
+                }
+
+            }
+
+            var customerName = $('#modal-name').val();
+            if (customerName.length < 5) {
+                result = false;
+                $('#modal-name-error').show();
+            }
+            else {
+                $('#modal-name-error').hide();
+            }
+
+
+            return result && validateQuantity();
+        }
+
+        function validateQuantity() {
+            var qty = $('#modal-quantity').val();
+
+            if (qty.match(/^\d+$/) && (qty > 0)) {
+                $('#modal-quantity-error').hide();
+                return true;
+            }
+            else {
+                $('#modal-quantity-error').show();
+                return false;
+
+            }
+        }
+
+        function sendOrder(product) {
 
             var result = false;
 
@@ -266,11 +346,15 @@
                 type: 'post',
                 data: {
                     product: product,
-                    quantity: quantity,
-                    email: email
+                    quantity: $('#modal-quantity').val(),
+                    email: $('#modal-email').val(),
+                    name: $('#modal-name').val(),
+                    comment: $('#modal-comment').val()
                 },
                 cache: false,
                 success: function (response) {
+
+                    console.log('resp: ' + response);
 
                     result = response;
                     console.log(response);
@@ -296,10 +380,16 @@
 
             }
             else {
+                result += '.-' + product.unit.unit + "<br>Kívánt mennyiség: " + inp + " " + product.unit.order_unit + "<br>"
+                        + "Ára: ";
+                if (validateQuantity()) {
 
-                result += '.-' + product.unit.unit + ", " + inp + "<br>Kívánt mennyiség: " + product.unit.order_unit + "<br>"
-                        + "Várható ár: " + ((product.price / product.unit.change_number) * inp) + ' Ft.';
+                    result += ((product.price / product.unit.change_number) * inp) + ' Ft.';
 
+                }
+                else {
+                    result += 'Nem meghatározható!';
+                }
 
             }
 

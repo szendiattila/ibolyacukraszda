@@ -23,7 +23,7 @@ class UnitTableSeeder extends Seeder
             'id' => 1,
             'unit' => 'Kg',
             'order_unit' => 'dkg',
-            'change_number' => 10
+            'change_number' => 100
         ]);
 
 
