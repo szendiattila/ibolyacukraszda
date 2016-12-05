@@ -1,5 +1,5 @@
 {
-    "name": "nwidart/cake",
+    "name": "nwidart/page",
     "description": "",
     "authors": [
         {
@@ -9,7 +9,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Modules\\Cake\\": ""
+            "Modules\\Page\\": ""
         }
     }
 }

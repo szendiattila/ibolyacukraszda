@@ -1,12 +1,12 @@
 {
-    "name": "Cake",
-    "alias": "cake",
+    "name": "Page",
+    "alias": "page",
     "description": "",
     "keywords": [],
     "active": 1,
     "order": 0,
     "providers": [
-        "Modules\\Cake\\Providers\\CakeServiceProvider"
+        "Modules\\Page\\Providers\\PageServiceProvider"
     ],
     "aliases":{},
     "files": [

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Cake\Providers;
+namespace Modules\Page\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class CakeServiceProvider extends ServiceProvider
+class PageServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -43,10 +43,10 @@ class CakeServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            __DIR__.'/../Config/config.php' => config_path('cake.php'),
+            __DIR__.'/../Config/config.php' => config_path('page.php'),
         ]);
         $this->mergeConfigFrom(
-            __DIR__.'/../Config/config.php', 'cake'
+            __DIR__.'/../Config/config.php', 'page'
         );
     }
 
@@ -57,7 +57,7 @@ class CakeServiceProvider extends ServiceProvider
      */
     public function registerViews()
     {
-        $viewPath = base_path('resources/views/modules/cake');
+        $viewPath = base_path('resources/views/modules/page');
 
         $sourcePath = __DIR__.'/../Resources/views';
 
@@ -66,8 +66,8 @@ class CakeServiceProvider extends ServiceProvider
         ]);
 
         $this->loadViewsFrom(array_merge(array_map(function ($path) {
-            return $path . '/modules/cake';
-        }, \Config::get('view.paths')), [$sourcePath]), 'cake');
+            return $path . '/modules/page';
+        }, \Config::get('view.paths')), [$sourcePath]), 'page');
     }
 
     /**
@@ -77,12 +77,12 @@ class CakeServiceProvider extends ServiceProvider
      */
     public function registerTranslations()
     {
-        $langPath = base_path('resources/lang/modules/cake');
+        $langPath = base_path('resources/lang/modules/page');
 
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, 'cake');
+            $this->loadTranslationsFrom($langPath, 'page');
         } else {
-            $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'cake');
+            $this->loadTranslationsFrom(__DIR__ .'/../Resources/lang', 'page');
         }
     }
 
