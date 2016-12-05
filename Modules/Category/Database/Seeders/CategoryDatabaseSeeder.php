@@ -81,7 +81,8 @@ class CategoryDatabaseSeeder extends Seeder
             'id' => 8,
             'name' => 'Fagylalt torta',
             'description_above' => 'Pultból választható x ízből',
-            'description_below' => null
+            'description_below' => null,
+            'type' => 1
         ]);
 
         Category::create([

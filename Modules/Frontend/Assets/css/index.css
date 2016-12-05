@@ -192,6 +192,26 @@ body {
     margin: -75px 0 0 -100px;
 }
 
+.taste-img {
+    width: 100%;
+}
+
+.taste-box {
+
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+
+
+
+
+
+
+
+
+
 /* Bal oldalsó sáv képei*/
 #left-1 {
     margin-top: 10px;

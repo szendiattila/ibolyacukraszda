@@ -11,25 +11,18 @@
 
         @foreach($categories as $category)
             <div class="content-cake">
-                <div class="well">{{$category->name}}</div>
-                <p class="category-detail">{{$category->description_above}}</p>
+                @if($category->type == 0)
+                    <div class="well">{{$category->name}}</div>
+                    <p class="category-detail">{{$category->description_above}}</p>
 
-                <div class="cake-container">
-
-                    @foreach($category->products as $product)
-                        @php
-                            $productCounter++
-                        @endphp
-                        @if($product->type != 0)
-
-                            <div class="taste-box">
+                    <div class="cake-container">
 
 
-                            </div>
+                        @foreach($category->products as $product)
 
-
-                        @else
-
+                            @php
+                                $productCounter++
+                            @endphp
 
 
                             <div class="cake" id="product-{{$product->id}}">
@@ -56,11 +49,57 @@
                             </div>
 
 
-                        @endif
 
-                    @endforeach
 
-                </div>
+                        @endforeach
+
+
+                    </div>
+                @else
+
+
+                    <div class="taste-box well">
+
+
+                        <div class="row col-md-12">
+
+                            <div class="col-md-3">
+                                <img src="{{$category->products->first()->image}}" class="taste-img">
+                            </div>
+
+                            <div class="taste-text col-md-9">
+
+                                <p class="category-detail .text-capitalize">{{$category->name}}</p>
+                                <p class="category-detail">{{$category->description_above}}</p>
+                                <div class="row col-md-12">
+
+                                    @foreach($category->products as $product)
+
+                                        <div class="taste-box col-md-4">
+
+                                            <p>{{$product->name}}</p><br>
+                                            <p>{{$product->_10pcs_price}}</p><br>
+                                            <p>{{$product->_20pcs_price}}</p><br>
+                                            <p>
+                                                <button type="button" class="btn btn-info">Megrendelés</button>
+                                            </p>
+
+
+                                        </div>
+                                    @endforeach
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                @endif
+
                 <p class="category-detail">{{$category->description_above}}</p>
 
             </div>
