@@ -1,36 +1,37 @@
 <div class="form-group">
-    {{ Form::label('name', 'Termék neve') }}
-    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'A torta megnevezése...', 'required']) }}
+    {{ Form::label('name', 'Oldal neve') }}
+    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Oldal megnevezése...', 'required']) }}
 </div>
 
 <div class="form-group">
-    {{ Form::label('category_list', 'Termék kategória') }}
-    {{ Form::select('category_list[]', $categories, null, ['class' => 'form-control', 'placeholder' => 'Válaszd ki a torta kategóriáját...', 'required']) }}
+    {{ Form::label('url', 'Url') }}
+    {{ Form::text('url', null, ['class' => 'form-control', 'placeholder' => 'Url...', 'required']) }}
 </div>
 
 <div class="form-group">
-    {{ Form::label('description', 'Termék leírás') }}
-    {{ Form::textarea('description', null, ['class' => 'form-control', 'placeholder' => 'A torta leírása...', 'required']) }}
+    {{ Form::label('title', 'Title') }}
+    {{ Form::text('title', null, ['class' => 'form-control', 'placeholder' => 'A böngésző fül neve...', 'required']) }}
+</div>
+
+
+<div class="form-group">
+    {{ Form::label('keywords', 'Meta keywords') }}
+    {{ Form::text('keywords', null, ['class' => 'form-control', 'placeholder' => 'Meta kulcsszavak vesszővel elválasztva...', 'required']) }}
 </div>
 
 <div class="form-group">
-    {{ Form::label('_10pcs_price', '10 szeletes ára') }}
-    {{ Form::number('_10pcs_price', null, ['class' => 'form-control', 'placeholder' => 'A torta ára (10 szelet)...', 'required']) }}
+    {{ Form::label('description', 'Meta description') }}
+    {{ Form::textarea('description', null, ['class' => 'form-control', 'placeholder' => 'Meta leírás...', 'required']) }}
 </div>
 
 <div class="form-group">
-    {{ Form::label('_20pcs_price', '20 szeletes ára') }}
-    {{ Form::number('_20pcs_price', null, ['class' => 'form-control', 'placeholder' => 'A torta ára (20 szelet)...', 'required']) }}
-</div>
-
-<div class="form-group">
-    {{ Form::label('image', 'Termék kép') }}
-    {{ Form::file('image', ['class' => 'form-control fileinput-control', 'data-show-upload' => 'false']) }}
+    {{ Form::label('content', 'Oldal tartalma') }}
+    {{ Form::textarea('content', null, ['class' => 'form-control', 'placeholder' => 'Oldal tartalma...', 'required']) }}
 </div>
 
 <div class="form-group">
     {{ Form::submit($submitButton, ['class' => 'form-control btn btn-primary']) }}
-    <a class="btn btn-danger form-control" href="{{ url('dashboard/product') }}">Mégse</a>
+    <a class="btn btn-danger form-control" href="{{ url('dashboard/page') }}">Mégse</a>
 </div>
 
 {{ Form::close() }}

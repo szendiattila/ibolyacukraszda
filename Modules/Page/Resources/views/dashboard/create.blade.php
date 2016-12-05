@@ -1,9 +1,9 @@
 @extends('dashboard::layouts.master')
 
 @section('content')
-    <h1>Új termék hozzáadása</h1>
+    <h1>Új oldal hozzáadása</h1>
 
-    {{ Form::open(['url' => 'dashboard/product', 'files' => true ]) }}
+    {{ Form::open(['url' => 'dashboard/page']) }}
 
-    @include('product::dashboard.partials._form', ['submitButton' => 'Mentés'])
+    @include('page::dashboard.partials._form', ['submitButton' => 'Mentés'])
 @stop

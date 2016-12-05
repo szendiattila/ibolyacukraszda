@@ -5,61 +5,45 @@ namespace Modules\Page\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Page\Entities\Page;
 
 class PageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Response
-     */
     public function index()
     {
-        $pages = Page::all();
+        $pages = Page::paginate();
 
-        return view('page::dashboard.index');
+        return view('page::dashboard.index', compact('pages'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Response
-     */
     public function create()
     {
-        return view('page::create');
+        return view('page::dashboard.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
     public function store(Request $request)
     {
+        Page::create($request->all());
+
+        return redirect('dashboard/page');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @return Response
-     */
-    public function edit()
+    public function edit(Page $page)
     {
-        return view('page::edit');
+        return view('page::dashboard.edit', compact('page'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param  Request $request
-     * @return Response
-     */
-    public function update(Request $request)
+    public function update(Page $page, Request $request)
     {
+        $page->update($request->all());
+
+        return redirect('dashboard/page');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @return Response
-     */
-    public function destroy()
+    public function destroy(Page $page)
     {
+        $page->delete();
+
+        return redirect('dashboard/page');
     }
 }

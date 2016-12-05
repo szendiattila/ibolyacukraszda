@@ -28,11 +28,11 @@
                 </li>
 
                 <li>
-                    <a href="/dashboard/product">Product</a>
+                    <a href="/dashboard/product">Tortakezelő</a>
                 </li>
 
                 <li>
-                    <a href="/dashboard/cake">Tortakezelő</a>
+                    <a href="/dashboard/page">Oldalak</a>
                 </li>
             </ul>
 

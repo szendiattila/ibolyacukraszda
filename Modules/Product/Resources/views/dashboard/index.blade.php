@@ -16,7 +16,6 @@ $newString = 'Termék';
                 <th>#</th>
                 <th>Megnevezés</th>
                 <th>Kategória</th>
-                <th>Leírás</th>
                 <th>10 szeletes ára</th>
                 <th>20 szeletes ára</th>
                 <th>Kép</th>
@@ -38,7 +37,6 @@ $newString = 'Termék';
                             {{ $category->name }}
                         @endforeach
                     </td>
-                    <td>{{ $product->description}}</td>
                     <td>{{ $product->_10pcs_price . config('ibolya.currency') }}</td>
                     <td>{{ $product->_20pcs_price . config('ibolya.currency') }}</td>
                     <td><img src="{{asset('images/product/tn-'.$product->image)}}" height="50px"></td>
