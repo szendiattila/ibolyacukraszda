@@ -21,13 +21,6 @@ class FrontendController extends Controller
         return view('frontend::frontend.product', compact('categories', 'regularProducts'));
     }
 
-//    public function products()
-//    {
-//        $categories = Category::all();
-//
-//        return view('frontend::frontend.product');
-//    }
-
     public function orderForm($id, $quantity)
     {
         dd($id, $quantity);
@@ -39,43 +32,20 @@ class FrontendController extends Controller
         return view('frontend::frontend.order');
     }
 
-
     public function order()
     {
-
-        //email küldés
-
-
-        //felugró ablak legyen a rendelés sikerességéről?
         return view('frontend::frontend.order');
     }
 
     public function orderAjax(Request $request)
     {
-        $product = $request->get('product', 'no product');
-        $quantity = $request->get('quantity', 'no quantity');
-        $email = $request->get('email', 'no email');
-        $name = $request->get('name', 'no name');
-        $comment = $request->get('comment');
-
-
-        $data = ['product' => $product, 'quantity' => $quantity, 'name' => $name, 'comment' => $comment, 'email' => $email];
-
-        return $data;
-
-
-        return Mail::send('frontend::emails.order', $data, function ($message) use ($email) {
-            $message->from('ibolya@examplee.come', 'Laravel')
-                ->subject('Ibolya cukrászda rendelés');
-
-            $message->to($email); //->cc('bar@example.com');
-
-            // $message->attach($pathToFile);
+        return Mail::send('frontend::emails.order', $request->all(), function ($message) use ($request) {
+            $message
+                ->from('ibolya@examplee.come', 'Laravel')
+                ->subject('Ibolya cukrászda rendelés')
+                ->to($request->input('email'));
         });
-
-
     }
-
 
     public function getProductById($id, $type)
     {
