@@ -1,5 +1,5 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'productwithunit', 'namespace' => 'Modules\ProductWithUnit\Http\Controllers'], function () {
-    Route::get('/', 'ProductWithUnitController@index');
+Route::group(['middleware' => 'web', 'prefix' => 'dashboard', 'namespace' => 'Modules\ProductWithUnit\Http\Controllers\Dashboard'], function () {
+    Route::resource('/productwithunit', 'ProductWithUnitController');
 });

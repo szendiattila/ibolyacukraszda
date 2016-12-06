@@ -32,6 +32,10 @@
                 </li>
 
                 <li>
+                    <a href="/dashboard/productwithunit">Süteménykezelő</a>
+                </li>
+
+                <li>
                     <a href="/dashboard/page">Oldalak</a>
                 </li>
 
