@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <base href="http://localhost:8000/"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="keywords" content="@yield('keywords')">
@@ -33,5 +34,7 @@
 
 <!-- Scripts -->
 <script src="/js/app.js"></script>
+{{--<script src="{{ asset('/plugins/tinymce/tinymcs.min.js') }}"></script>--}}
+@yield('script')
 </body>
 </html>

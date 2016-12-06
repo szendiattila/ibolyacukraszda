@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ba4001ef1b25cc02cf2ec69bbac4010e",
-    "content-hash": "75edd136b2f4e47bbbf42ead1a5ed3bd",
+    "hash": "c334d5c0662adb94dcf6d537b833b957",
+    "content-hash": "9d7806797fcf3a0ed4743b753b5ee0ee",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -2996,6 +2996,44 @@
                 "xunit"
             ],
             "time": "2016-11-27 07:52:03"
+        },
+        {
+            "name": "pqb/filemanager-laravel",
+            "version": "2.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guillermomartinez/filemanager-laravel.git",
+                "reference": "561e7094ec73a283775abb57ddc64a5724ddfbd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guillermomartinez/filemanager-laravel/zipball/561e7094ec73a283775abb57ddc64a5724ddfbd1",
+                "reference": "561e7094ec73a283775abb57ddc64a5724ddfbd1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*",
+                "intervention/image": "2.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Pqb\\FilemanagerLaravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Guillermo M.",
+                    "email": "guille_55_88@hotmail.com"
+                }
+            ],
+            "description": "Filemanager for Laravel",
+            "time": "2016-10-27 04:40:11"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

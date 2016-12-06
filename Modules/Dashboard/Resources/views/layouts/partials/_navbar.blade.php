@@ -34,6 +34,10 @@
                 <li>
                     <a href="/dashboard/page">Oldalak</a>
                 </li>
+
+                <li>
+                    <a href="/dashboard/menu">Menükezelő</a>
+                </li>
             </ul>
 
             <!-- Right Side Of Navbar -->

@@ -1,3 +1,5 @@
+@include('partials.dashboard.tinymce')
+
 <div class="form-group">
     {{ Form::label('name', 'Oldal neve') }}
     {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Oldal megnevezése...', 'required']) }}
@@ -26,7 +28,7 @@
 
 <div class="form-group">
     {{ Form::label('content', 'Oldal tartalma') }}
-    {{ Form::textarea('content', null, ['class' => 'form-control', 'placeholder' => 'Oldal tartalma...', 'required']) }}
+    {{ Form::textarea('content', null, ['class' => 'form-control tinymce-control', 'placeholder' => 'Oldal tartalma...', 'required']) }}
 </div>
 
 <div class="form-group">
