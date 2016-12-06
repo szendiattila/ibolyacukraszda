@@ -35,34 +35,10 @@
 
         </div>
 
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="rolunk">Rólunk</a></li>
-                    <li><a href="rendeles">Tortarendelés</a></li>
-                    <li><a href="cukraszda">Egyéb sütemények</a></li>
-                    <li><a href="kapcsolat">Kapcsolat</a></li>
-                </ul>
-            </div>
-        </nav>
+        @include('frontend::layouts.partials._navbar')
 
         <div class="content">
             @yield('content')
-        </div>
-        <div class="footer">
-
-            <div class="well">Kapcsolat</div>
-
-            <div>
-                <!--<i class="fa fa-envelope" aria-hidden="true"></i> -->
-                email cím
-                <!--<i class="fa fa-facebook" aria-hidden="true"></i> -->
-                facebook
-                <!--<i class="fa fa-phone" aria-hidden="true"></i> -->
-                telefon
-            </div>
-
         </div>
 
 

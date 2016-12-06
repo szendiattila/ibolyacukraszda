@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'menu', 'namespace' => 'Modules\Menu\Http\Controllers'], function()
+Route::group(['middleware' => 'web', 'prefix' => 'dashboard', 'namespace' => 'Modules\Menu\Http\Controllers\Dashboard'], function()
 {
-    Route::get('/', 'MenuController@index');
+    Route::resource('menu', 'MenuController');
 });

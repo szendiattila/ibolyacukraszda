@@ -15,5 +15,11 @@ require('laravel-elixir-vue-2');
 
 elixir(mix => {
     mix.sass('app.scss')
-       .webpack('app.js');
+    .webpack('app.js');
+
+    mix.webpack(
+        './resources/assets/js/dashboard/change_order.js',
+        './public/js/dashboard/change_order.js'
+    );
 });
+

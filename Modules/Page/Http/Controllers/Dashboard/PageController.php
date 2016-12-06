@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Page\Entities\Page;
+use Modules\Page\Http\Requests\PageRequest;
 
 class PageController extends Controller
 {
@@ -21,7 +22,7 @@ class PageController extends Controller
         return view('page::dashboard.create');
     }
 
-    public function store(Request $request)
+    public function store(PageRequest $request)
     {
         Page::create($request->all());
 
@@ -33,7 +34,7 @@ class PageController extends Controller
         return view('page::dashboard.edit', compact('page'));
     }
 
-    public function update(Page $page, Request $request)
+    public function update(Page $page, PageRequest $request)
     {
         $page->update($request->all());
 

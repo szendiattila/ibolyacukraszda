@@ -14,45 +14,19 @@ class FrontendController extends Controller
 {
     public function index()
     {
-
-
-        //dd(Config::get('mail'));
-
-
         $categories = Category::with('products')->whereHas('products')->get();
 
         $regularProducts = RegularProduct::with('unit')->get();
 
-
-        //dd($regularProducts);
-
         return view('frontend::frontend.product', compact('categories', 'regularProducts'));
     }
 
-    public function products()
-    {
-        $categories = Category::all();
-
-        dd($categories);
-
-        return view('frontend::frontend.product');
-    }
-
-    public function aboutUs()
-    {
-        //  return 'about Us';
-        return view('frontend::frontend.about_us');
-    }
-
-    public function contact()
-    {
-        return view('frontend::frontend.contact');
-    }
-
-    public function sweetShop()
-    {
-        return view('frontend::frontend.sweetShop');
-    }
+//    public function products()
+//    {
+//        $categories = Category::all();
+//
+//        return view('frontend::frontend.product');
+//    }
 
     public function orderForm($id, $quantity)
     {

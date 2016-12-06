@@ -23,6 +23,7 @@
                 'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+    @yield('style')
 </head>
 <body>
     @include('dashboard::layouts.partials._navbar')
@@ -33,7 +34,6 @@
 
 <!-- Scripts -->
 <script src="/js/app.js"></script>
-{{--<script src="{{ asset('/plugins/tinymce/tinymcs.min.js') }}"></script>--}}
 @yield('script')
 </body>
 </html>

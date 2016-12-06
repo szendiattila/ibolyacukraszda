@@ -1,0 +1,37 @@
+.sortable.ui-sortable
+{
+	list-style-type: none;
+	width: 100%;
+	overflow: visible;
+}
+
+.sortable.ui-sortable ul
+{
+	list-style-type: none;
+}
+
+.sortable.ui-sortable li i.fa.fa-arrows
+{
+	cursor: move;
+}
+
+.sortable.ui-sortable li .sortable-item
+{
+	padding: 13px 10px;
+	cursor: move;
+	border: 1px solid #ddd
+}
+
+.sortable.ui-sortable li .sortable-controls
+{
+	margin-right: -3px;
+	margin-top: -7px;
+}
+
+.ui-sortable-placeholder
+{
+	background: #f4f4f4;
+	border: 1px dashed #ddd;
+	margin-bottom: 10px;
+	/*  visibility: visible !important;*/
+}
