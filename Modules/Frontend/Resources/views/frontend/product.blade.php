@@ -1,7 +1,7 @@
 @extends('frontend::layouts.master')
 
 @php
-    $productCounter = 0;
+    $productCounter = 1;
 @endphp
 @section('content')
 
@@ -57,7 +57,6 @@
                     </div>
                 @else
 
-
                     <div class="taste-box well">
 
 
@@ -77,15 +76,34 @@
 
                                         <div class="taste-box col-md-4">
 
-                                            <p>{{$product->name}}</p><br>
-                                            <p>{{$product->_10pcs_price}}</p><br>
-                                            <p>{{$product->_20pcs_price}}</p><br>
-                                            <p>
-                                                <button type="button" class="btn btn-info">Megrendelés</button>
-                                            </p>
+                                            {{Form::open(['url' => 'rendeles', 'method' => 'post', 'id' => 'form-'. $productCounter]) }}
+                                            {{Form::token()}}
+                                            {{Form::hidden('id', $product->id, ['id' => 'id_'.$productCounter])}}
+                                            {{Form::hidden('type', 0, ['id' => 'type_'.$productCounter])}}
 
+                                            {{ Form::label('name', $product->name) }}
+
+                                            <div class="row taste-pcs-line">
+                                                {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 10, true, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_10pcs']) }}
+                                                {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_10pcs', '10 szeletes' . $product->_10pcs_price . '.-') }}
+                                            </div>
+                                            <div class="row taste-pcs-line">
+                                                {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 20, false, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_20pcs']) }}
+                                                {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_20pcs', '20 szeletes' . $product->_20pcs_price . '.-' ) }}
+                                            </div>
+
+
+                                            <p>
+                                                <button type="button" class="btn btn-info" id="{{$productCounter}}">
+                                                    Megrendelem
+                                                </button>
+                                            </p>
+                                            {{Form::close()}}
 
                                         </div>
+                                        @php
+                                            $productCounter++
+                                        @endphp
                                     @endforeach
 
 
@@ -122,7 +140,7 @@
                         $productCounter++
                     @endphp
                     <tr>
-                        {{ Form::open(['url' => 'rendeles', 'method' => 'get']) }}
+                        {{Form::open(['url' => 'rendeles', 'method' => 'get']) }}
                         {{Form::token()}}
                         {{Form::hidden('id', $regularProduct->id, ['id' => 'id_'.$productCounter])}}
                         {{Form::hidden('type', 1, ['id' => 'type_'.$productCounter])}}
@@ -155,72 +173,7 @@
         </div>
 
 
-        <!-- Modal -->
-        <div id="myModal" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Rendelés</h4>
-                    </div>
-                    <div class="modal-body form-group">
-                        <label>Email cím:</label>
-                        <input type="text" name="email" id="modal-email" value="" class="form-control">
-                        <div id="modal-email-error" style="display: none;" class="alert-danger">
-                            Nem megfelelő email cím!
-                        </div>
-                    </div>
-
-                    <div class="modal-body form-group">
-                        <label>Név:</label>
-                        <input type="text" name="name" id="modal-name" value="" class="form-control">
-                        <div id="modal-name-error" style="display: none;" class="alert-danger">
-                            Adja meg a nevét kérem!
-                        </div>
-                    </div>
-
-                    <div class="modal-body form-group">
-                        <label>Megjegyzés:</label>
-                        <input type="text" name="comment" id="modal-comment" value="" class="form-control">
-                    </div>
-
-                    <div class="modal-body form-group">
-                        <label>Mennyiség:</label>
-                        <input type="number" name="quantity" id="modal-quantity" class="form-control" value="1" min="1"
-                               step="1" max="999999">
-                        <div id="modal-quantity-error" style="display: none;" class="alert-danger">
-                            A mennyiségnek pozitív számjegynek kell lennie
-                        </div>
-                    </div>
-
-                    <div class="modal-body form-group">
-                        <label>Email és Név megjegyzése, a további megrendelések felgyorsításához:</label>
-                        <input type="checkbox" name="order-data-remember" id="modal-order-data-remember" value="false"
-                               class=""><br>
-                    </div>
-
-                    <div class="modal-body form-group">
-                        <label>Rendelés adatai:</label>
-                        <div id="modal-order-description"></div>
-                    </div>
-
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success" data-dismiss="modal" id="modal-order-btn">Rendelés
-                            leadása
-                        </button>
-
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Mégsem</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-
+        @include('frontend::frontend.partials._product_modal')
 
     @endif
 
@@ -231,23 +184,27 @@
     <script src="{{asset('modules/frontend/js/js.cookie.js')}}"></script>
     <script>
 
+        function modalCakePcsChange(pcs) {
+            $('#modal-pcs').val(pcs);
+        }
+
         $(function () {
 
-
+            var pCounter = null;
             var actualProduct = null;
             var inp = null;
 
             $('.btn.btn-info').on('click', function () {
 
+                console.log($(this).val());
 
                 // $('#myModal').dialog('open');
-
+                pCounter = this.id;
                 $('#modal-email-error').hide();
                 $('#modal-name-error').hide();
                 $('#modal-quantity-error').hide();
 
                 console.log(this.id);
-
                 inp = $('#inp_' + this.id).val();
                 var pid = $('#id_' + this.id).val();
                 var type = $('#type_' + this.id).val();
@@ -261,22 +218,63 @@
                  console.log(name);
                  */
 
+                console.log('type: ' + type);
+
                 $.ajax({
                     url: "getProduct/" + pid + "/" + type,
                     cache: false,
-                    success: function (respone) {
+                    success: function (response) {
 
-                        actualProduct = respone[0];
+                        actualProduct = response;
 
-                        var orderDescription = orderProductText(respone[0], inp);
+
+//                        console.dir(response);
+
+                        var orderDescription = orderProductText(response, inp);
+//
+//                        console.log('actual: ');
+//                        console.dir(actualProduct);
 
                         $('#modal-order-description').html(orderDescription);
 
-                        $('#modal-quantity').val(inp);
-                        //$('#myModal').dialog('open');
-                        $('#myModal').modal('show');
+                        if (actualProduct.hasOwnProperty('unit_id')) {
 
-                        console.log(respone);
+                            $('#modal-quantity').val(inp);
+
+                            //$('#myModal').dialog('open');
+                            $('#modal-cake-slice-price').hide();
+                            $('#modal-quantity-div').show();
+
+                        }
+                        else {
+                            console.log('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price');
+
+                            console.log('pcs: ' + $('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price' + ']:checked', '#form-' + pCounter).val());
+
+                            if ($('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price' + ']:checked', '#form-' + pCounter).val() == 10) {
+                                console.log('checked 10');
+                                $('#modal-pcs').val(10);
+                                $("#modal-cake-pcs-10").prop("checked", true);
+                            }
+                            else {
+                                console.log('not checked 10');
+                                $('#modal-pcs').val(20);
+                                $("#modal-cake-pcs-20").prop("checked", true);
+                            }
+
+                            console.log(actualProduct._10pcs_price);
+                            console.log(actualProduct._20pcs_price);
+
+                            $('#modal-cake-slice-price').show();
+                            $('#modal-quantity-div').hide();
+
+                            $('#modal-pcs-10-label').html(actualProduct._10pcs_price);
+                            $('#modal-pcs-20-label').html(actualProduct._20pcs_price);
+
+
+                        }
+
+                        $('#myModal').modal('show');
                     }
                 });
 
@@ -380,12 +378,34 @@
                         }
                     });
 
+            var _quantity = 0;
+
+            if (product.hasOwnProperty('unit_id')) {
+                _quantity = $('#modal-quantity').val();
+            }
+            else {
+
+                //  _quantity = $('input[name=modal-cake-pcs]:checked', '#modal-form-id').val();
+                _quantity = $('#modal-pcs').val();
+            }
+
+            console.log('rendelni kívánt mennyiség: ' + _quantity);
+
+
+            var pType = 0;
+
+            if (product.hasOwnProperty('unit_id')) {
+                pType = 1;
+            }
+
+
             $.ajax({
                 url: "/rendeles-veglegesites-ajax",
                 type: 'post',
                 data: {
-                    product: product,
-                    quantity: $('#modal-quantity').val(),
+                    product: product.id,
+                    quantity: _quantity,
+                    pType: pType,
                     email: $('#modal-email').val(),
                     name: $('#modal-name').val(),
                     comment: $('#modal-comment').val()
@@ -411,14 +431,17 @@
         }
 
         function orderProductText(product, inp) {
+//            console.log('product: ');
+//            console.dir(product);
 
-            var result = 'Termék neve: ' + product.name + '<br>Termék ára:' + product.price;
+            var result = 'Termék neve: ';
 
-            if (product.unit_id == 0) {
+            if (!product.hasOwnProperty('unit_id')) {
 
-
+                return result + product.categories[0].name + ' - ' + product.name;
             }
             else {
+                result += product.name + '<br>Termék ára:' + product.price;
                 result += '.-' + product.unit.unit + "<br>Kívánt mennyiség: " + inp + " " + product.unit.order_unit + "<br>"
                         + "Ára: ";
                 if (validateQuantity()) {
@@ -430,9 +453,10 @@
                     result += 'Nem meghatározható!';
                 }
 
+                return result;
             }
 
-            return result;
+
         }
 
 

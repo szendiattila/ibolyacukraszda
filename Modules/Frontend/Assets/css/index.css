@@ -203,8 +203,10 @@ body {
     justify-content: space-around;
 }
 
-
-
+.taste-pcs-line {
+    background-color: white;
+    padding-top: 10px;
+}
 
 
 
