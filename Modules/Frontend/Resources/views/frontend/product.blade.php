@@ -10,12 +10,13 @@
 
 
         @foreach($categories as $category)
-            <div class="content-cake">
+            <div class="content-cake col-xs-2 col-sm-8 col-md-12 col-lg-24">
                 @if($category->type == 0)
+
                     <div class="well">{{$category->name}}</div>
                     <p class="category-detail">{{$category->description_above}}</p>
 
-                    <div class="cake-container">
+                    <div class="col-xs-2 col-sm-8 col-md-12 col-lg-24">
 
 
                         @foreach($category->products as $product)
@@ -32,7 +33,8 @@
 
                                 <div>
                                     {{--<img src="images/product/{{$product->image}}" class="cake-img">--}}
-                                    <img src="{{$product->image}}" class="cake-img">
+                                    <img src="{{$product->image}}"
+                                         class="col-xs-1 col-sm-1 col-md-2 col-lg-2 img-responsive pull-left">
 
 
                                 </div>
@@ -118,8 +120,9 @@
 
                 @endif
 
-                <p class="category-detail">{{$category->description_above}}</p>
-
+                @if($category->type == 0)
+                    <p class="category-detail">{{$category->description_above}}</p>
+                @endif
             </div>
         @endforeach
 
