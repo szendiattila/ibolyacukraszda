@@ -128,7 +128,7 @@ class ProductDatabaseSeeder extends Seeder
             if (isset($cakes[$i]['type'])) {
                 $product = Product::create([
                     'name' => $cakes[$i]['name'],
-                    'image' => $faker->imageUrl(640, 640, 'food', true),
+                    'image' => $faker->imageUrl(200, 200, 'food', true),
                     'description' => $faker->text(),
                     '_10pcs_price' => $cakes[$i]['_10pcs_price'],
                     '_20pcs_price' => $cakes[$i]['_20pcs_price'],

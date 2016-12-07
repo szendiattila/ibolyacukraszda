@@ -78,71 +78,8 @@ class FrontendController extends Controller
         return view('frontend::frontend.order');
     }
 
-    public function orderAjax(Request $request)
-    {
-        $id = $request->get('product', '0');
-
-        $pType = $request->get('pType', '0');
-
-        if ($pType == 0) {
-            $product = Product::with('categories')->whereId($id)->get()->first();
-        } else {
-            $product = RegularProduct::with('unit')->whereId($id)->get()->first();
-        }
 
 
-        $quantity = $request->get('quantity', 'no quantity');
-        $email = $request->get('email', 'no email');
-        $name = $request->get('name', 'no name');
-        $comment = $request->get('comment');
-
-
-        $data = ['product' => $product, 'quantity' => $quantity, 'name' => $name, 'comment' => $comment, 'email' => $email];
-//
-//        return $data;
-
-//
-//        $sendMail = Mail::send('frontend::emails.order', $data, function ($message) use ($email) {
-//            $message->from('ibolya@examplee.come', 'Laravel')
-//                ->subject('Ibolya cukrászda rendelés');
-//
-//            $message->to($email); //->cc('bar@example.com');
-//
-//            // $message->attach($pathToFile);
-//        });
-
-
-        $sendMail = Mail::send('frontend::emails.order', $data,
-            function ($message) use ($email) {
-
-                $message->from('ibolya@examplee.come', 'Laravel');
-
-                $message->subject('Rendelés');
-
-                $message->to($email); //->cc('bar@example.com');
-
-            });
-
-        return $sendMail ? 1 : 0;
-
-
-
-
-
-    }
-
-
-    public function getProductById($id, $type)
-    {
-
-        if ($type == 0) {
-            $product = Product::with('categories')->whereId($id)->get()->first();
-        } else {
-            $product = RegularProduct::with('unit')->whereId($id)->get()->first();
-        }
-
-        return $product;
-    }
 
 
 }
