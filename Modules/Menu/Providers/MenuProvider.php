@@ -7,12 +7,25 @@ use Modules\Menu\Entities\Menu;
 
 class MenuProvider extends ServiceProvider
 {
+
+
     /**
-     * Indicates if loading of the provider is deferred.
+     * Bootstrap the application services.
      *
-     * @var bool
+     * @return void
      */
-    protected $defer = false;
+    public function boot()
+    {
+
+        view()->composer('frontend::layouts.partials._navbar', function($view){
+
+            $menus = Menu::orderBy('order')->get();
+
+            dd($menus);
+
+            $view->with('menus', $menus);
+        });
+    }
 
     /**
      * Register the service provider.
@@ -21,21 +34,7 @@ class MenuProvider extends ServiceProvider
      */
     public function register()
     {
-        view()->composer('frontend::layouts.partials._navbar', function($view){
 
-            $menus = Menu::orderBy('order')->get();
-
-            $view->with('menus', $menus);
-        });
     }
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [];
-    }
 }

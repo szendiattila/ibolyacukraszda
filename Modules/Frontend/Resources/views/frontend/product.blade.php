@@ -1,107 +1,78 @@
 @extends('frontend::layouts.master')
-
 @php
     $productCounter = 1;
 @endphp
 @section('content')
-
-
     @if(count($categories) > 0)
+        <div class="row">
+            @foreach($categories as $category)
+                <div class="col-xs-24 content-cake mb20">
+                    @if($category->type == 0)
 
-
-        @foreach($categories as $category)
-            <div class="content-cake col-xs-2 col-sm-8 col-md-12 col-lg-24">
-                @if($category->type == 0)
-
-                    <div class="well">{{$category->name}}</div>
-                    <p class="category-detail">{{$category->description_above}}</p>
-
-                    <div class="col-xs-2 col-sm-8 col-md-12 col-lg-24">
-
-
-                        @foreach($category->products as $product)
-
-                            @php
-                                $productCounter++
-                            @endphp
-
-
-                            <div class="cake" id="product-{{$product->id}}">
-                                <div class="cake-header">
-                                    {{$product->name}}
+                        <div class="row">
+                            <div class="col-xs-24">
+                                <div class="well content-title p10">
+                                    <h2>{{$category->name}}</h2>
                                 </div>
-
-                                <div>
-                                    {{--<img src="images/product/{{$product->image}}" class="cake-img">--}}
-                                    <img src="{{$product->image}}"
-                                         class="col-xs-1 col-sm-1 col-md-2 col-lg-2 img-responsive pull-left">
-
-
-                                </div>
-                                {{--<div style="display: none">--}}
-                                {{--{{$product->description}}--}}
-                                {{--10 szeletes ára:--}}
-                                {{--{{$product->_10pcs_price}}--}}
-                                {{--20 szeletes ára:--}}
-                                {{--{{$product->_20pcs_price}}--}}
-
-                                {{--<button class="btn alert-success">Megrendelés</button>--}}
-                                {{--</div>--}}
-
+                                <div class="category-detail">{{$category->description_above}}</div>
                             </div>
+                        </div>
 
 
+                        <div class="row">
+                            @foreach($category->products as $product)
+                                @php
+                                    $productCounter++
+                                @endphp
+                                <div class="col-xxs-24 col-xs-12 col-sm-8 col-md-6 col-lg-4 cake-item"
+                                     id="product-{{$product->id}}">
+                                    <div class="cake">
+                                        <div class="cake-header">
+                                            {{$product->name}}
+                                        </div>
+                                        <div class="cake-img">
+                                            {{--<img src="images/product/{{$product->image}}" class="cake-img">--}}
+                                            <img src="{{$product->image}}" alt="{{$product->name}}">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="row">
+                            <div class="col-xs-9">
 
-
-                        @endforeach
-
-
-                    </div>
-                @else
-
-                    <div class="taste-box well">
-
-
-                        <div class="row col-md-12">
-
-                            <div class="col-md-3">
                                 <img src="{{$category->products->first()->image}}" class="taste-img">
                             </div>
-
-                            <div class="taste-text col-md-9">
+                            <div class="col-xs-15">
 
                                 <p class="category-detail .text-capitalize">{{$category->name}}</p>
                                 <p class="category-detail">{{$category->description_above}}</p>
-                                <div class="row col-md-12">
+
+                                <div class="row">
 
                                     @foreach($category->products as $product)
 
-                                        <div class="taste-box col-md-4">
-
+                                        <div class="col-xs-8">
                                             {{Form::open(['url' => 'rendeles', 'method' => 'post', 'id' => 'form-'. $productCounter]) }}
                                             {{Form::token()}}
                                             {{Form::hidden('id', $product->id, ['id' => 'id_'.$productCounter])}}
                                             {{Form::hidden('type', 0, ['id' => 'type_'.$productCounter])}}
-
                                             {{ Form::label('name', $product->name) }}
-
-                                            <div class="row taste-pcs-line">
+                                            <div class="row">
                                                 {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 10, true, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_10pcs']) }}
                                                 {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_10pcs', '10 szeletes' . $product->_10pcs_price . '.-') }}
                                             </div>
-                                            <div class="row taste-pcs-line">
+                                            <div class="row">
                                                 {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 20, false, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_20pcs']) }}
                                                 {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_20pcs', '20 szeletes' . $product->_20pcs_price . '.-' ) }}
                                             </div>
-
-
                                             <p>
                                                 <button type="button" class="btn btn-info" id="{{$productCounter}}">
                                                     Megrendelem
                                                 </button>
                                             </p>
                                             {{Form::close()}}
-
                                         </div>
                                         @php
                                             $productCounter++
@@ -113,80 +84,71 @@
 
                             </div>
 
+
                         </div>
-
-
-                    </div>
-
-                @endif
-
-                @if($category->type == 0)
-                    <p class="category-detail">{{$category->description_above}}</p>
-                @endif
-            </div>
-        @endforeach
-
-    @else
-
-        <p>Nincs elérhető termék lista, kérlek nézz vissza később!</p>
-
-    @endif
-
-
-    @if(isset($regularProducts) && count($regularProducts) > 0)
-
-        <div class="content-cake">
-            <div class="well">Rendelhető édes és sós sütemények</div>
-            <table class="table table-hover">
-                @foreach($regularProducts as $regularProduct)
-                    @php
-                        $productCounter++
-                    @endphp
-                    <tr>
-                        {{Form::open(['url' => 'rendeles', 'method' => 'get']) }}
-                        {{Form::token()}}
-                        {{Form::hidden('id', $regularProduct->id, ['id' => 'id_'.$productCounter])}}
-                        {{Form::hidden('type', 1, ['id' => 'type_'.$productCounter])}}
-                        {{--     {{Form::hidden('name', $regularProduct->name, ['id' => 'name_'.$productCounter])}}
-                           {{Form::hidden('unit', $regularProduct->unit->unit, ['id' => 'unit_'.$productCounter])}}
-                           {{Form::hidden('unit_order', $regularProduct->unit->unit_order, ['id' => 'unit_order_'.$productCounter])}}
-                       --}}
-                        <td>{{$regularProduct->name}}
-                            @if(isset($regularProduct->description))
-                                <br>/{{$regularProduct->description}}/
-                            @endif
-                        </td>
-                        <td>{{$regularProduct->price}}.-{{$regularProduct->unit->unit}}</td>
-                        <td>
-                            <div class="row">
-                                {{ Form::number('quantity', 1, ['class' => 'form-control', 'placeholder' => 'Írja be a mennyiséget.',
-                                'min' => 1, 'max' => 999999, 'step' => 1, 'id' => 'inp_'.$productCounter]) }}
-                                {{$regularProduct->unit->order_unit}}
+                    @endif
+                    @if($category->type == 0)
+                        @if($category->type)
+                            <div class="col-xs-24 category-detail">
+                                {{$category->description_above}}
                             </div>
-                        </td>
-                        <td>
-                            <button type="submit" class="btn btn-info" data-toggle="modal" data-target="#myModal"
-                                    id="{{$productCounter}}">Megrendelem
-                            </button>
-                        </td>
-                        {{Form::close()}}
-                    </tr>
-                @endforeach
-            </table>
+                        @endif
+                    @endif
+                </div>
+            @endforeach
         </div>
-
-
-        @include('frontend::frontend.partials._product_modal')
-
+    @else
+        <p>Nincs elérhető termék lista, kérlek nézz vissza később!</p>
     @endif
-
+    @if(isset($regularProducts) && count($regularProducts) > 0)
+        <div class="content-cake">
+            <div class="well content-title">Rendelhető édes és sós sütemények</div>
+            <div class="table-container">
+                <table class="table table-responsive table-condensed table-cookies">
+                    @foreach($regularProducts as $regularProduct)
+                        @php
+                            $productCounter++
+                        @endphp
+                        <tr>
+                            {{Form::open(['url' => 'rendeles', 'method' => 'get']) }}
+                            {{Form::token()}}
+                            {{Form::hidden('id', $regularProduct->id, ['id' => 'id_'.$productCounter])}}
+                            {{Form::hidden('type', 1, ['id' => 'type_'.$productCounter])}}
+                            {{--     {{Form::hidden('name', $regularProduct->name, ['id' => 'name_'.$productCounter])}}
+                            {{Form::hidden('unit', $regularProduct->unit->unit, ['id' => 'unit_'.$productCounter])}}
+                            {{Form::hidden('unit_order', $regularProduct->unit->unit_order, ['id' => 'unit_order_'.$productCounter])}}
+                            --}}
+                            <td class="col-xs-1 col-sm-1 col-md-2 col-lg-4">{{$regularProduct->name}}
+                                @if(isset($regularProduct->description))
+                                    <br>/{{$regularProduct->description}}/
+                                @endif
+                            </td>
+                            <td class="col-xs-1 col-sm-1 col-md-2 col-lg-4">{{$regularProduct->price}}
+                                .-{{$regularProduct->unit->unit}}
+                            </td>
+                            <td>
+                                {{ Form::number('quantity', 1, ['class' => 'form-control cookie-input', 'placeholder' => 'Írja be a mennyiséget.',
+                                'min' => 1, 'max' => 999999, 'step' => 1, 'id' => 'inp_'.$productCounter]) }}
+                            </td>
+                            <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1"> {{$regularProduct->unit->order_unit}}</td>
+                            <td class="col-xs-1 col-sm-1 col-md-1 col-lg-2">
+                                <button type="submit" class="btn btn-info" data-toggle="modal" data-target="#myModal"
+                                        id="{{$productCounter}}">Megrendelem
+                                </button>
+                            </td>
+                            {{Form::close()}}
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+        @include('frontend::frontend.partials._product_modal')
+    @endif
 @endsection
-
 @section('scripts')
     @parent
     <script src="{{asset('modules/frontend/js/js.cookie.js')}}"></script>
     <script>
-
         function modalCakePcsChange(pcs) {
             $('#modal-pcs').val(pcs);
         }
@@ -231,12 +193,12 @@
                         actualProduct = response;
 
 
-//                        console.dir(response);
+                        //                        console.dir(response);
 
                         var orderDescription = orderProductText(response, inp);
-//
-//                        console.log('actual: ');
-//                        console.dir(actualProduct);
+                        //
+                        //                        console.log('actual: ');
+                        //                        console.dir(actualProduct);
 
                         $('#modal-order-description').html(orderDescription);
 
@@ -434,8 +396,8 @@
         }
 
         function orderProductText(product, inp) {
-//            console.log('product: ');
-//            console.dir(product);
+            //            console.log('product: ');
+            //            console.dir(product);
 
             var result = 'Termék neve: ';
 
@@ -464,5 +426,4 @@
 
 
     </script>
-
 @endsection

@@ -1,11 +1,13 @@
-.navbar .navbar-nav {
-    display: inline-block;
-    float: none;
-    vertical-align: top;
-}
+@media (min-width: 768px) {
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
 
-.navbar .navbar-collapse {
-    text-align: center;
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
 }
 
 /* navbar */
@@ -14,26 +16,29 @@
     border-color: #ffffff;
 }
 
+.navbar-default .navbar-nav > li > a {
+    color: black;
+    border-bottom: 1px solid transparent;
+    padding: 0; /*removing spacing*/
+    margin: 14px; /*add spacing*/
+}
+
 body {
-    background-image: url("paper.gif");
-    background-repeat: repeat-y;
 
     background-image: url('../images/hatter_ibolya_cukraszda.jpg');
     background-repeat: repeat-y;
+    background-size: 100%;
     /*background-attachment: fixed;*/
 }
 
 
 
-/*
+
 
 .header {
     min-height: 120px;
 }
 
-.container {
-    min-height: 0px !important;
-}
 
 .content {
     overflow: hidden;
@@ -45,22 +50,29 @@ body {
 
 .content-cake {
     background-color: white;
-    padding-top: 10px;
-    padding-bottom: 5px;
-    padding-right: 5px;
-    padding-left: 5px;
-    margin-bottom: 25px;
+    /*
+        padding-top: 10px;
+        padding-bottom: 5px;
+        padding-right: 5px;
+        padding-left: 5px;
+        margin-bottom: 25px;
+      */
+    border: 1px solid lightgrey;
+    padding: 10px 10px 0;
+}
+
+.content-cake h2 {
+    font-size: 100%;
+    margin: 0;
 }
 
 .cake {
-    width: 117px;
-    padding: 0px;
-    margin: 10px;
+
     border-style: solid;
     border-width: 1px;
     border-color: lightgrey;
     border-radius: 6px;
-    float: left;
+    margin-bottom: 10px;
 }
 
 .cake-header {
@@ -72,25 +84,70 @@ body {
 }
 
 .cake-img {
-    width: 115px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.cake-img img {
+    width: 100%;
+    height: auto;
+}
+
+.cake-center {
+    margin: 0 auto;
+    width: 98%;
+}
+
+.content-title {
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .cake-container {
 
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    /*justify-content: space-around;*/
+
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
 
 }
 
+.cookie-input {
+    width: 100px;
+}
+
+@media screen and (min-width: 1080px) {
+
+    .table-container {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+}
 
 .footer {
+    min-height: 150px;
     background-color: white;
     padding-top: 10px;
     padding-bottom: 5px;
     padding-right: 5px;
     padding-left: 5px;
-    margin-bottom: 25px;
+}
+
+.footer-container {
+    margin-left: 50px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.footer-data {
+    width: 50%;
 }
 
 .side-images {
@@ -107,12 +164,6 @@ body {
     overflow: hidden;
 }
 
-.crop_img {
-    width: 400px;
-    height: 300px;
-    margin: -75px 0 0 -100px;
-}
-
 .taste-img {
     width: 100%;
 }
@@ -126,8 +177,6 @@ body {
 
 .taste-pcs-line {
     background-color: white;
-    padding-top: 10px;
+    padding: 5px;
+    margin-bottom: 10px;
 }
-
-
-*/

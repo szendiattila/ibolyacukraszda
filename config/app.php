@@ -162,7 +162,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Modules\Menu\Providers\MenuProvider::class,
+
+        \Modules\Menu\Providers\MenuProvider::class,
 
         /*
          * Package Service Providers...

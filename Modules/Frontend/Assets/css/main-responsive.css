@@ -1,0 +1,41 @@
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Only extra small devices (phones, less than 768px) */
+@media (max-width: 767px) {
+    .col-xxs-24 {
+        width: 33.33333333333333%;
+    }
+}
+
+@media (max-width: 480px) {
+    .col-xxs-24 {
+        width: 50%;
+    }
+}
+
+@media (max-width: 320px) {
+    .col-xxs-24 {
+        width: 100%;
+    }
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
+
+/* EXTRA */
+@media (min-width: 1920px) {
+
+}
