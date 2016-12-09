@@ -46,6 +46,7 @@ body {
 
 .category-detail {
     text-align: center;
+
 }
 
 .content-cake {
@@ -101,6 +102,14 @@ body {
 .content-title {
     text-align: center;
     text-transform: uppercase;
+}
+
+.content-title-taste {
+
+    text-align: center;
+    text-transform: uppercase;
+    font-size: medium;
+    margin-top: 15px;
 }
 
 .cake-container {
@@ -164,19 +173,23 @@ body {
     overflow: hidden;
 }
 
-.taste-img {
-    width: 100%;
-}
 
-.taste-box {
-
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-}
 
 .taste-pcs-line {
     background-color: white;
     padding: 5px;
     margin-bottom: 10px;
+}
+
+.tastes {
+    text-align: center;
+    margin: 10%;
+}
+
+.background-white {
+    background-color: white;
+}
+
+.background-grey {
+    background-color: lightgrey;
 }

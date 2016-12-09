@@ -38,17 +38,24 @@
             <div class="footer">
                 <div class="well content-title">Kapcsolat</div>
                 <div class="row">
-                    <div class="footer-container">
-                        <div class="footer-data"><i class="fa fa-facebook" aria-hidden="true"></i> Kövess minket
+                    <div class="col-xs-16 col-xs-offset-4">
+                        <div class="col-sx-24 col-sm-12 col-md-12"><i class="fa fa-facebook" aria-hidden="true"></i>
+                            Kövess minket
                             facebook-on
                         </div>
-                        <div class="footer-data"><i class="fa fa-map-marker" aria-hidden="true"></i> 4029 Debrecen,
+                        <div class="col-sx-24 col-sm-12 col-md-12"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                            4029 Debrecen,
                             bercsény utca 4.
                         </div>
-                        <div class="footer-data"><i class="fa fa-envelope" aria-hidden="true"></i> mail@ibolyacukraszda
-                            .hu
+                    </div>
+
+                    <div class="col-xs-16 col-xs-offset-4">
+                        <div class="col-sx-24 col-sm-12 col-md-12">
+                            <i class="fa fa-envelope" aria-hidden="true"></i> mail@ibolyacukraszda.hu
                         </div>
-                        <div class="footer-data"><i class="fa fa-phone" aria-hidden="true"></i> 06 (30) 2763 480</div>
+                        <div class="col-sx-24 col-sm-12 col-md-12">
+                            <i class="fa fa-phone" aria-hidden="true"></i> 06 (30) 2763 480
+                        </div>
                     </div>
 
 

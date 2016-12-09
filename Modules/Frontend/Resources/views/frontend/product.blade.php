@@ -20,12 +20,26 @@
 
 
                         <div class="row">
-                            @foreach($category->products as $product)
+                            @foreach($category->products as $key => $product)
                                 @php
                                     $productCounter++
                                 @endphp
                                 <div class="col-xxs-24 col-xs-12 col-sm-8 col-md-6 col-lg-4 cake-item"
-                                     id="product-{{$product->id}}">
+                                     id="product-{{$product->id}}" data-id="{{ $key+1 }}">
+
+                                    <input type="hidden" id="product-{{$product->id}}counter_{{$key+1}}"
+                                           value="{{$productCounter}}">
+                                    <input type="hidden" id="product-{{$product->id}}image_{{$key+1}}"
+                                           value="{{$product->image}}">
+                                    <input type="hidden" id="product-{{$product->id}}name_{{$key+1}}"
+                                           value="{{$product->name}}">
+                                    <input type="hidden" id="product-{{$product->id}}description_{{$key+1}}"
+                                           value="{{$product->description}}">
+                                    <input type="hidden" id="product-{{$product->id}}_10pcs_price_{{$key+1}}"
+                                           value="{{$product->_10pcs_price}}">
+                                    <input type="hidden" id="product-{{$product->id}}_20pcs_price_{{$key+1}}"
+                                           value="{{$product->_20pcs_price}}">
+
                                     <div class="cake">
                                         <div class="cake-header">
                                             {{$product->name}}
@@ -40,50 +54,68 @@
                         </div>
                     @else
                         <div class="row">
-                            <div class="col-xs-9">
 
-                                <img src="{{$category->products->first()->image}}" class="taste-img">
-                            </div>
-                            <div class="col-xs-15">
-
-                                <p class="category-detail .text-capitalize">{{$category->name}}</p>
-                                <p class="category-detail">{{$category->description_above}}</p>
+                            <div class="col-xs-24 background-white">
 
                                 <div class="row">
 
-                                    @foreach($category->products as $product)
+                                    <div class="col-xs-24 well">
 
-                                        <div class="col-xs-8">
-                                            {{Form::open(['url' => 'rendeles', 'method' => 'post', 'id' => 'form-'. $productCounter]) }}
-                                            {{Form::token()}}
-                                            {{Form::hidden('id', $product->id, ['id' => 'id_'.$productCounter])}}
-                                            {{Form::hidden('type', 0, ['id' => 'type_'.$productCounter])}}
-                                            {{ Form::label('name', $product->name) }}
-                                            <div class="row">
-                                                {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 10, true, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_10pcs']) }}
-                                                {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_10pcs', '10 szeletes' . $product->_10pcs_price . '.-') }}
+                                        <div class="row">
+
+                                            <div class="col-xs-24 col-sm-8">
+                                                <img src="{{$category->products->first()->image}}" class="taste-img">
+
                                             </div>
-                                            <div class="row">
-                                                {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 20, false, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_20pcs']) }}
-                                                {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_20pcs', '20 szeletes' . $product->_20pcs_price . '.-' ) }}
+
+                                            <div class="col-xs-24 col-sm-15">
+
+                                                <p class="content-title-taste">{{$category->name}}</p>
+                                                <p class="category-detail">{{$category->description_above}}</p>
+
+                                                <div class="row">
+
+                                                    @foreach($category->products as $product)
+                                                        <div class="col-xs-24 col-sm-7 tastes-box">
+                                                            @php
+                                                                $productCounter++
+                                                            @endphp
+                                                            {{Form::open(['url' => 'rendeles', 'method' => 'post', 'id' => 'form-'. $productCounter]) }}
+                                                            {{Form::token()}}
+                                                            {{Form::hidden('id', $product->id, ['id' => 'id_'.$productCounter])}}
+                                                            {{Form::hidden('type', 0, ['id' => 'type_'.$productCounter])}}
+                                                            {{ Form::label('name', $product->name) }}
+                                                            <div class="row">
+                                                                {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 10, true, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_10pcs']) }}
+                                                                {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_10pcs', '10 szeletes' . $product->_10pcs_price . '.-') }}
+                                                            </div>
+                                                            <div class="row">
+                                                                {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 20, false, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_20pcs']) }}
+                                                                {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_20pcs', '20 szeletes' . $product->_20pcs_price . '.-' ) }}
+                                                            </div>
+                                                            <p>
+                                                                <button type="button" class="btn btn-info"
+                                                                        id="{{$productCounter}}">
+                                                                    Megrendelem
+                                                                </button>
+                                                            </p>
+                                                            {{Form::close()}}
+                                                        </div>
+
+                                                    @endforeach
+
+                                                </div>
+
                                             </div>
-                                            <p>
-                                                <button type="button" class="btn btn-info" id="{{$productCounter}}">
-                                                    Megrendelem
-                                                </button>
-                                            </p>
-                                            {{Form::close()}}
+
                                         </div>
-                                        @php
-                                            $productCounter++
-                                        @endphp
-                                    @endforeach
+
+                                    </div>
 
 
                                 </div>
 
                             </div>
-
 
                         </div>
                     @endif
@@ -101,47 +133,61 @@
         <p>Nincs elérhető termék lista, kérlek nézz vissza később!</p>
     @endif
     @if(isset($regularProducts) && count($regularProducts) > 0)
-        <div class="content-cake">
-            <div class="well content-title">Rendelhető édes és sós sütemények</div>
-            <div class="table-container">
-                <table class="table table-responsive table-condensed table-cookies">
+
+        <div class="row">
+
+            <div class="col-xs-24 background-white">
+
+                <div class="well content-title">Rendelhető édes és sós sütemények</div>
+                <div class="col-xs-16 col-xs-offset-4">
                     @foreach($regularProducts as $regularProduct)
                         @php
                             $productCounter++
                         @endphp
-                        <tr>
+
+                        <div class="row mb5">
+
                             {{Form::open(['url' => 'rendeles', 'method' => 'get']) }}
                             {{Form::token()}}
                             {{Form::hidden('id', $regularProduct->id, ['id' => 'id_'.$productCounter])}}
                             {{Form::hidden('type', 1, ['id' => 'type_'.$productCounter])}}
-                            {{--     {{Form::hidden('name', $regularProduct->name, ['id' => 'name_'.$productCounter])}}
-                            {{Form::hidden('unit', $regularProduct->unit->unit, ['id' => 'unit_'.$productCounter])}}
-                            {{Form::hidden('unit_order', $regularProduct->unit->unit_order, ['id' => 'unit_order_'.$productCounter])}}
-                            --}}
-                            <td class="col-xs-1 col-sm-1 col-md-2 col-lg-4">{{$regularProduct->name}}
+
+                            <div class="col-xs-24 col-sm-10 col-md-10">
+                                {{$regularProduct->name}}
                                 @if(isset($regularProduct->description))
-                                    <br>/{{$regularProduct->description}}/
+                                    <p>/{{$regularProduct->description}}/</p>
                                 @endif
-                            </td>
-                            <td class="col-xs-1 col-sm-1 col-md-2 col-lg-4">{{$regularProduct->price}}
+                            </div>
+                            <div class="col-xs-24 col-sm-4 col-sm col-md-4">
+                                {{$regularProduct->price}}
                                 .-{{$regularProduct->unit->unit}}
-                            </td>
-                            <td>
-                                {{ Form::number('quantity', 1, ['class' => 'form-control cookie-input', 'placeholder' => 'Írja be a mennyiséget.',
-                                'min' => 1, 'max' => 999999, 'step' => 1, 'id' => 'inp_'.$productCounter]) }}
-                            </td>
-                            <td class="col-xs-1 col-sm-1 col-md-1 col-lg-1"> {{$regularProduct->unit->order_unit}}</td>
-                            <td class="col-xs-1 col-sm-1 col-md-1 col-lg-2">
+                            </div>
+                            <div class="col-xs-20 col-sm-4 col-md-4">
+                                {{ Form::number('quantity', 1, ['class' => 'form-control col-xs-3', 'placeholder' => 'Írja be a mennyiséget.',
+                                        'min' => 1, 'max' => 999999, 'step' => 1, 'id' => 'inp_'.$productCounter]) }}
+                            </div>
+                            <div class="col-xs-4 col-sm-2 col-md-2">
+                                {{$regularProduct->unit->order_unit}}
+                            </div>
+                            <div class="col-xs-24 col-sm-4 col-md-4">
                                 <button type="submit" class="btn btn-info" data-toggle="modal" data-target="#myModal"
                                         id="{{$productCounter}}">Megrendelem
                                 </button>
-                            </td>
+                            </div>
                             {{Form::close()}}
-                        </tr>
+
+                        </div>
+
+
                     @endforeach
-                </table>
+                </div>
+
             </div>
+
+
         </div>
+
+
         @include('frontend::frontend.partials._product_modal')
     @endif
 @endsection
@@ -153,6 +199,90 @@
             $('#modal-pcs').val(pcs);
         }
 
+        function getScreenWidth() {
+
+            return $(window).width();
+        }
+
+        function numberOfCakesInRow() {
+
+            var width = getScreenWidth();
+
+            if (width <= 320)
+                return 1;
+            if (width > 320 && width <= 480)
+                return 2;
+            if (width > 480 && width < 768)
+                return 3;
+            if (width >= 768 && width < 992)
+                return 4;
+            else
+                return 6;
+        }
+
+        function getCakeDescriptionTemplate(id, ob) {
+
+            var pre = "#" + $(ob).attr("id");
+
+            var counter = $(pre + 'counter_' + id).val();
+
+            console.log(counter);
+
+            var name = $(pre + 'name_' + id).val();
+            var image = $(ob).find(".cake-img").html();
+            var description = $(pre + 'description_' + id).val();
+            var _10pcs_price = $(pre + '_10pcs_price_' + id).val();
+            var _20pcs_price = $(pre + '_20pcs_price_' + id).val();
+
+            var template = '<div class="col-xs-24"><div class="well cake-item-details">' +
+                    '<div class="row">' +
+                    '<div class="col-xs-1"><</div><div class="col-xs-8">' +
+                    image + '</div> ' +
+                    '<div class="col-xs-14"> <div class="row"> <div class="col-xs-24"> ' +
+                    '<p>' + name + '</p> <p>' + description + '</p> ' +
+                    '</div> </div> ' +
+                    '<div class="row"> <div class="col-xs-24"> ' +
+                    '<div class="row"> ' +
+                    '<div class="col-xs-12"> ' +
+                    '<p><input type="radio" checked name="_pcs_price_order' + id + '" id="_10_pcs_price_order' + id + '"> <label for="_10_pcs_price_order' + id + '">10 szeletes:' + _10pcs_price + '.-</p> ' +
+                    '<p><input type="radio" name="_pcs_price_order' + id + '" id="_20_pcs_price_order' + id + '"> <label for="_20_pcs_price_order' + id + '">20 szeletes:' + _20pcs_price + '.-</p> ' +
+                    '</div> ' +
+                    '<div class="col-xs-12"> ' +
+                    '<button id="' + counter + '" type="button" class="btn btn-info">Megrendelem</button> ' +
+                    '</div> </div> </div> </div> </div> ' +
+                    '<div class="col-xs-1">></div> </div> </div></div> ';
+
+            return template;
+        }
+
+        $(function () {
+
+
+            $(".cake-item").click(function () {
+
+                $(".cake-item-details").remove();
+                var di = $(this).attr("data-id");
+
+                var template = getCakeDescriptionTemplate(di, this);
+
+                console.log("data-id:" + di);
+                // var cake_datas = di.split('_');
+
+                //alert(cake_datas[1]);
+
+                var numberOfCakes = numberOfCakesInRow();
+                console.log('number of cakes: ' + numberOfCakes);
+
+                var last = Math.ceil(di / numberOfCakes) * numberOfCakes;
+                var max = $(this).parent().find(".cake-item").last().attr("data-id");
+                if (last > max) {
+                    last = max;
+                }
+                $(this).parent().find(".cake-item[data-id=" + last + "]").after(template);
+            });
+
+        });
+
         $(function () {
 
             var pCounter = null;
@@ -161,10 +291,13 @@
 
             $('.btn.btn-info').on('click', function () {
 
-                console.log($(this).val());
+                console.log('id: ' + $(this).val());
 
                 // $('#myModal').dialog('open');
                 pCounter = this.id;
+
+                console.log('btn id: ' + pCounter);
+
                 $('#modal-email-error').hide();
                 $('#modal-name-error').hide();
                 $('#modal-quantity-error').hide();
