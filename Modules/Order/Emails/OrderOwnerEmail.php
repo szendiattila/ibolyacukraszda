@@ -7,19 +7,18 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class OrderCustomerEmail extends Mailable
+class OrderOwnerEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-
-    public $email, $name, $comment, $product, $pType, $quantity, $amount;
+    public $email, $name, $comment, $product, $pType, $quantity;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($email,$name,$comment, $product, $pType, $quantity, $amount)
+    public function __construct($email,$name,$comment, $product, $pType, $quantity)
     {
         $this->email = $email;
         $this->name = $name;
@@ -27,7 +26,6 @@ class OrderCustomerEmail extends Mailable
         $this->product = $product;
         $this->pType = $pType;
         $this->quantity = $quantity;
-        $this->amount = $amount;
     }
 
     /**
@@ -37,8 +35,6 @@ class OrderCustomerEmail extends Mailable
      */
     public function build()
     {
-
-
-        return $this->view('mail.orderCustomer')->from('ngg@uniweb.hu')->subject('Rendelés az Ibolya cukrászdából');
+        return $this->view('mail.orderOwner');
     }
 }

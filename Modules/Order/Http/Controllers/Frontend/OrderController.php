@@ -3,8 +3,10 @@
 namespace Modules\Order\Http\Controllers\Frontend;
 
 
+use Illuminate\Contracts\Mail\Mailable;
 use Illuminate\Routing\Controller;
 
+use Modules\Order\Emails\OrderCustomerEmail;
 use Modules\Order\Entities\Order;
 use Modules\Order\Http\Requests\OrderRequest;
 use Modules\Product\Entities\Product;
@@ -22,19 +24,15 @@ class OrderController extends Controller
 
         $pType = $request->get('pType', '0');
 
-        if ($pType == 0) {
-            $product = Product::with('categories')->whereId($id)->get()->first();
-        } else {
-            $product = RegularProduct::with('unit')->whereId($id)->get()->first();
-        }
 
         $quantity = $request->get('quantity', 'no quantity');
         $email = $request->get('email');
         $name = $request->get('name', 'no name');
         $comment = $request->get('comment');
 
+        $product = $this->getProductByType($id, $pType);
 
-        $data = ['product' => $product, 'quantity' => $quantity, 'name' => $name, 'comment' => $comment, 'email' => $email];
+        //$data = ['product' => $product, 'quantity' => $quantity, 'name' => $name, 'comment' => $comment, 'email' => $email];
 
         Order::create([
             'email' => $email,
@@ -45,18 +43,19 @@ class OrderController extends Controller
             'quantity' => $quantity
         ]);
 
-        $this->sendMail('order::mail.orderOwner', $data, '_kisselek@freemail.hu');
 
+        $amount = $this->calculatePrice($product,$quantity,$pType);
 
-        return $this->sendMail('order::mail.orderCustomer', $data, $email);
+        return $this->sendMail(OrderCustomerEmail::class, $email, $name, $comment, $product, $pType, $quantity, $amount);
 
 
     }
 
 
-    private function sendMail($template, $data, $email)
+    private function sendMail(Mailable $template, $email, $name, $comment, $product, $pType, $quantity, $amount)
     {
 
+        /*
         return Mail::send($template, $data,
             function ($message) use ($email) {
 
@@ -67,7 +66,33 @@ class OrderController extends Controller
                 $message->to($email);
 
             });
+        */
 
+        return Mail::to($email)->send(new $template($email,$name,$comment, $product, $pType, $quantity, $amount));
+
+    }
+
+
+    public function calculatePrice($product, $quantity, $pType)
+    {
+        if ($pType == 0) {
+            return ($quantity == 10) ? $product->_10pcs_price :
+                ($quantity == 20) ? $product->_20pcs_price : "Hiba történt az ár kiszámítása közben!";
+        } else {
+            return ($product->price / $product->unit->change_number) * $quantity;
+        }
+
+    }
+
+
+    public function getProductByType($id, $pType)
+    {
+
+        if ($pType == 0) {
+            return Product::with('categories')->whereId($id)->get()->first();
+        } else {
+            return RegularProduct::with('unit')->whereId($id)->get()->first();
+        }
     }
 
 

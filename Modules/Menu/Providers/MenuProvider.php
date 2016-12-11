@@ -21,7 +21,6 @@ class MenuProvider extends ServiceProvider
 
             $menus = Menu::orderBy('order')->get();
 
-            dd($menus);
 
             $view->with('menus', $menus);
         });
