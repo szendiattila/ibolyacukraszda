@@ -193,3 +193,7 @@ body {
 .background-grey {
     background-color: lightgrey;
 }
+
+.modal-price {
+    display: inline;
+}

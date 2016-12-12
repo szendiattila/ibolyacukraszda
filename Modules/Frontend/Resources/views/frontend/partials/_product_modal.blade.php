@@ -44,21 +44,27 @@
                     </div>
 
                     <div class="row" id="modal-cake-slice-price">
-                        <div class="col-md-6 taste-pcs-line">
-                            <input type="radio" name="modal-cake-pcs" id="modal-cake-pcs-10" class="form-controll"
-                                   onchange="modalCakePcsChange(10)">
-                            <label for="modal-cake-pcs-10">10 szeletes
-                                <div id="modal-pcs-10-label"></div>
-                                .- Ft</label>
+                        <div class="col-xs-16 col-xs-offset-4">
+
+                            <div class="col-md-12 taste-pcs-line">
+                                <input type="radio" name="modal-cake-pcs" id="modal-cake-pcs-10" class="form-controll"
+                                       onchange="modalCakePcsChange(10)">
+                                <label for="modal-cake-pcs-10">10 szeletes
+                                    <div id="modal-pcs-10-label" class="modal-price"></div>
+                                    .- Ft</label>
+
+                            </div>
+                            <div class="col-md-12 taste-pcs-line">
+                                <input type="radio" name="modal-cake-pcs" id="modal-cake-pcs-20"
+                                       onchange="modalCakePcsChange(20)">
+                                <label for="modal-cake-pcs-20">20 szeletes
+                                    <div id="modal-pcs-20-label" class="modal-price"></div>
+                                    .- Ft</label>
+                            </div>
+                            <input type="hidden" id="modal-pcs" value="10">
+
+
                         </div>
-                        <div class="col-md-6 taste-pcs-line">
-                            <input type="radio" name="modal-cake-pcs" id="modal-cake-pcs-20"
-                                   onchange="modalCakePcsChange(20)">
-                            <label for="modal-cake-pcs-20">20 szeletes
-                                <div id="modal-pcs-20-label"></div>
-                                .- Ft</label>
-                        </div>
-                        <input type="hidden" id="modal-pcs" value="10">
 
 
                     </div>
