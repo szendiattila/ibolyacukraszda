@@ -20,10 +20,10 @@ class OrderController extends Controller
 
     public function orderAjax(OrderRequest $request)
     {
+
         $id = $request->get('product', '0');
 
         $pType = $request->get('pType', '0');
-
 
         $quantity = $request->get('quantity', 'no quantity');
         $email = $request->get('email');
@@ -31,8 +31,6 @@ class OrderController extends Controller
         $comment = $request->get('comment');
 
         $product = $this->getProductByType($id, $pType);
-
-        //$data = ['product' => $product, 'quantity' => $quantity, 'name' => $name, 'comment' => $comment, 'email' => $email];
 
         Order::create([
             'email' => $email,
@@ -44,31 +42,35 @@ class OrderController extends Controller
         ]);
 
 
-        $amount = $this->calculatePrice($product,$quantity,$pType);
+        $amount = $this->calculatePrice($product, $quantity, $pType);
 
-        return $this->sendMail(OrderCustomerEmail::class, $email, $name, $comment, $product, $pType, $quantity, $amount);
+        $data = ['product' => $product, 'pType' => $pType, 'quantity' => $quantity,
+            'name' => $name, 'comment' => $comment,
+            'email' => $email, 'amount' => $amount];
 
+        $this->sendMail('order::mail.orderOwner', $email, $data);
+        $this->sendMail('order::mail.orderCustomer', $email, $data);
+
+        return 1;
 
     }
 
 
-    private function sendMail(Mailable $template, $email, $name, $comment, $product, $pType, $quantity, $amount)
+    private function sendMail($template, $email, $data)
     {
 
-        /*
-        return Mail::send($template, $data,
+        Mail::send($template, $data,
             function ($message) use ($email) {
 
-                $message->from('ibolya@examplee.come', 'Ibolya cukrászda');
+                $message->from('csaccount04@gmail.com', 'Ibolya cukrászda');
 
                 $message->subject('Rendelés');
 
                 $message->to($email);
 
             });
-        */
 
-        return Mail::to($email)->send(new $template($email,$name,$comment, $product, $pType, $quantity, $amount));
+        // return Mail::to($email)->send(new $template($email,$name,$comment, $product, $pType, $quantity, $amount));
 
     }
 

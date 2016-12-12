@@ -4,6 +4,7 @@ namespace Modules\Frontend\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Modules\Category\Entities\Category;
+use Modules\Order\Emails\OrderCustomerEmail;
 use Modules\Product\Entities\Product;
 use Modules\ProductWithUnit\Entities\RegularProduct;
 use Illuminate\Http\Request;
@@ -42,8 +43,8 @@ class FrontendController extends Controller
 
     public function aboutUs()
     {
-        //  return 'about Us';
-        return view('frontend::frontend.about_us');
+        return 'about Us';
+
     }
 
     public function contact()
@@ -77,9 +78,6 @@ class FrontendController extends Controller
         //felugró ablak legyen a rendelés sikerességéről?
         return view('frontend::frontend.order');
     }
-
-
-
 
 
 }

@@ -1,8 +1,12 @@
 @extends('frontend::layouts.master')
+@include('shared._sweetalert2')
+
 @php
     $productCounter = 1;
 @endphp
 @section('content')
+
+
     @if(count($categories) > 0)
         <div class="row">
             @foreach($categories as $category)
@@ -39,6 +43,8 @@
                                            value="{{$product->_10pcs_price}}">
                                     <input type="hidden" id="product-{{$product->id}}_20pcs_price_{{$key+1}}"
                                            value="{{$product->_20pcs_price}}">
+                                    <input type="hidden" id="choiced-cake-quantity-{{$key+1}}"
+                                           value="10">
 
                                     <div class="cake">
                                         <div class="cake-header">
@@ -46,7 +52,7 @@
                                         </div>
                                         <div class="cake-img">
                                             {{--<img src="images/product/{{$product->image}}" class="cake-img">--}}
-                                            <img src="{{$product->image}}" alt="{{$product->name}}">
+                                            <img src="" alt="{{$product->name}}">
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +70,7 @@
                                         <div class="row">
 
                                             <div class="col-xs-24 col-sm-8">
-                                                <img src="{{$category->products->first()->image}}" class="taste-img">
+                                                <img src="" class="taste-img">
 
                                             </div>
 
@@ -244,15 +250,26 @@
                     '<div class="row"> <div class="col-xs-24"> ' +
                     '<div class="row"> ' +
                     '<div class="col-xs-12"> ' +
-                    '<p><input type="radio" checked name="_pcs_price_order' + id + '" id="_10_pcs_price_order' + id + '"> <label for="_10_pcs_price_order' + id + '">10 szeletes:' + _10pcs_price + '.-</p> ' +
-                    '<p><input type="radio" name="_pcs_price_order' + id + '" id="_20_pcs_price_order' + id + '"> <label for="_20_pcs_price_order' + id + '">20 szeletes:' + _20pcs_price + '.-</p> ' +
+                    '<p><input type="radio" checked name="_pcs_price_order' + id + '" id="_10_pcs_price_order' + id + '" onchange="choicedCakeSize(id,10)"> <label for="_10_pcs_price_order' + id + '">10 szeletes:' + _10pcs_price + '.-</p> ' +
+                    '<p><input type="radio" name="_pcs_price_order' + id + '" id="_20_pcs_price_order' + id + '" onchange="choicedCakeSize(id,20)"> <label for="_20_pcs_price_order' + id + '">20 szeletes:' + _20pcs_price + '.-</p> ' +
                     '</div> ' +
                     '<div class="col-xs-12"> ' +
-                    '<button id="' + counter + '" type="button" class="btn btn-info">Megrendelem</button> ' +
+                    '<button id="megrendelBtn" value="' + counter + '" type="button" class="btn btn-info"' +
+                    '>Megrendelem</button> ' +
                     '</div> </div> </div> </div> </div> ' +
                     '<div class="col-xs-1">></div> </div> </div></div> ';
 
             return template;
+        }
+
+        function choicedCakeSize(id, value) {
+            console.log('id: ' + id + ' ,change value to ' + value);
+            $('#choiced-cake-quantity-' + id).val(value);
+        }
+
+        function valami(id) {
+            var s = $('#choiced-cake-quantity-' + id).val();
+            console.log('klikk: ' + id + ' ---> ' + s);
         }
 
         $(function () {
@@ -279,132 +296,146 @@
                     last = max;
                 }
                 $(this).parent().find(".cake-item[data-id=" + last + "]").after(template);
+
+                $("#megrendelBtn").click(function () {
+
+                    console.log("hurrá rákkat a " + $(this).val() + " értékű buttonra");
+                    megrendelmodal(this);
+                });
             });
 
         });
 
-        $(function () {
-
-            var pCounter = null;
-            var actualProduct = null;
-            var inp = null;
-
-            $('.btn.btn-info').on('click', function () {
-
-                console.log('id: ' + $(this).val());
-
-                // $('#myModal').dialog('open');
-                pCounter = this.id;
-
-                console.log('btn id: ' + pCounter);
-
-                $('#modal-email-error').hide();
-                $('#modal-name-error').hide();
-                $('#modal-quantity-error').hide();
-
-                console.log(this.id);
-                inp = $('#inp_' + this.id).val();
-                var pid = $('#id_' + this.id).val();
-                var type = $('#type_' + this.id).val();
-
-                /*
-                 var name = $('#name_' + this.id).val();
-                 console.dir(inp);
-                 console.dir(pid);
-
-                 console.dir(type);
-                 console.log(name);
-                 */
-
-                console.log('type: ' + type);
-
-                $.ajax({
-                    url: "getProduct/" + pid + "/" + type,
-                    cache: false,
-                    success: function (response) {
-
-                        actualProduct = response;
+        function megrendelmodal(ob) {
 
 
-                        //                        console.dir(response);
+            $('#modal-order-succes').hide();
+            $('#modal-order-error').hide();
 
-                        var orderDescription = orderProductText(response, inp);
-                        //
-                        //                        console.log('actual: ');
-                        //                        console.dir(actualProduct);
+            // console.log('id: ' + $(this).val());
 
-                        $('#modal-order-description').html(orderDescription);
+            // $('#myModal').dialog('open');
+            pCounter = $(ob).val();
+            console.log("itt");
+            console.log('btn id: ' + pCounter);
 
-                        if (actualProduct.hasOwnProperty('unit_id')) {
+            $('#modal-email-error').hide();
+            $('#modal-name-error').hide();
+            $('#modal-quantity-error').hide();
 
-                            $('#modal-quantity').val(inp);
+            // console.log(this.id);
+            inp = $('#inp_' + pCounter).val();
+            var pid = $('#id_' + pCounter).val();
+            var type = $('#type_' + pCounter).val();
 
-                            //$('#myModal').dialog('open');
-                            $('#modal-cake-slice-price').hide();
-                            $('#modal-quantity-div').show();
+            /*
+             var name = $('#name_' + this.id).val();
+             console.dir(inp);
+             console.dir(pid);
 
+             console.dir(type);
+             console.log(name);
+             */
+
+            // console.log('type: ' + type);
+
+            $.ajax({
+                url: "getProduct/" + pid + "/" + type,
+                cache: false,
+                success: function (response) {
+
+                    actualProduct = response;
+
+
+                    //                        console.dir(response);
+
+                    var orderDescription = orderProductText(response, inp);
+                    //
+                    //                        console.log('actual: ');
+                    //                        console.dir(actualProduct);
+
+                    $('#modal-order-description').html(orderDescription);
+
+                    if (actualProduct.hasOwnProperty('unit_id')) {
+
+                        $('#modal-quantity').val(inp);
+
+                        //$('#myModal').dialog('open');
+                        $('#modal-cake-slice-price').hide();
+                        $('#modal-quantity-div').show();
+
+                    }
+                    else {
+                        console.log('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price');
+
+                        console.log('pcs: ' + $('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price' + ']:checked', '#form-' + pCounter).val());
+
+                        if ($('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price' + ']:checked', '#form-' + pCounter).val() == 10) {
+                            console.log('checked 10');
+                            $('#modal-pcs').val(10);
+                            $("#modal-cake-pcs-10").prop("checked", true);
                         }
                         else {
-                            console.log('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price');
-
-                            console.log('pcs: ' + $('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price' + ']:checked', '#form-' + pCounter).val());
-
-                            if ($('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price' + ']:checked', '#form-' + pCounter).val() == 10) {
-                                console.log('checked 10');
-                                $('#modal-pcs').val(10);
-                                $("#modal-cake-pcs-10").prop("checked", true);
-                            }
-                            else {
-                                console.log('not checked 10');
-                                $('#modal-pcs').val(20);
-                                $("#modal-cake-pcs-20").prop("checked", true);
-                            }
-
-                            console.log(actualProduct._10pcs_price);
-                            console.log(actualProduct._20pcs_price);
-
-                            $('#modal-cake-slice-price').show();
-                            $('#modal-quantity-div').hide();
-
-                            $('#modal-pcs-10-label').html(actualProduct._10pcs_price);
-                            $('#modal-pcs-20-label').html(actualProduct._20pcs_price);
-
-
+                            console.log('not checked 10');
+                            $('#modal-pcs').val(20);
+                            $("#modal-cake-pcs-20").prop("checked", true);
                         }
 
-                        $('#myModal').modal('show');
-                    }
-                });
+                        console.log(actualProduct._10pcs_price);
+                        console.log(actualProduct._20pcs_price);
 
-                return false;
+                        $('#modal-cake-slice-price').show();
+                        $('#modal-quantity-div').hide();
+
+                        $('#modal-pcs-10-label').html(actualProduct._10pcs_price);
+                        $('#modal-pcs-20-label').html(actualProduct._20pcs_price);
+
+
+                    }
+
+                    $('#myModal').modal('show');
+                }
             });
+
+            return false;
+        }
+        var pCounter = null;
+        var actualProduct = null;
+        var inp = null;
+
+
+        $(function () {
+
+
 
 
             $('#modal-order-btn').on('click', function () {
 
-                if (validateInputs()) {
+                        if (validateInputs()) {
 
-                    var successOrder = sendOrder(actualProduct);
+                            var successOrder = sendOrder(actualProduct);
 
-                    console.log('rendelés sikeressége: ' + successOrder);
-                    if (successOrder) {
+                            console.log('rendelés sikeressége: ' + successOrder);
 
-                        alert('Sikeres rendelés');
-                        return true;
-                    }
-                    else {
-                        alert('Sikertelen rendelés, kérem próbálja meg később!');
+
+                            if (successOrder == 1) {
+
+                                $('#modal-order-succes').show();
+                            }
+                            else {
+                                $('#modal-order-error').show();
+
+                            }
+
+
+                        }
+
+
                         return false;
+
+
                     }
-
-
-                }
-
-
-                return false;
-
-
-            });
+            );
 
 
             $('#modal-quantity').keyup(function () {
@@ -467,7 +498,7 @@
 
         function sendOrder(product) {
 
-            var result = false;
+            var result = 1;
 
             $.ajaxSetup(
                     {
@@ -488,6 +519,7 @@
             }
 
             console.log('rendelni kívánt mennyiség: ' + _quantity);
+            console.log('send order: ' + result);
 
 
             var pType = 0;
@@ -515,8 +547,13 @@
 
                     result = response;
                     console.log(response);
+
+                    return response;
                 }
             });
+
+
+            console.log('send order: ' + result);
 
             return result;
         }

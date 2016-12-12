@@ -38,7 +38,6 @@ class OrderCustomerEmail extends Mailable
     public function build()
     {
 
-
-        return $this->view('mail.orderCustomer')->from('ngg@uniweb.hu')->subject('Rendelés az Ibolya cukrászdából');
+        return $this->view('order::mail.orderCustomer')->from('csaccount04@gmail.com')->subject('Rendelés az Ibolya cukrászdából');
     }
 }
