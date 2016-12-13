@@ -6,6 +6,7 @@
 @endphp
 @section('content')
 
+    <input type="hidden" id="radio_cake_pcs" value="10">
 
     @if(count($categories) > 0)
         <div class="row">
@@ -31,7 +32,11 @@
                                 <div class="col-xxs-24 col-xs-12 col-sm-8 col-md-6 col-lg-4 cake-item"
                                      id="product-{{$product->id}}" data-id="{{ $key+1 }}">
 
-                                    <input type="hidden" id="product-{{$product->id}}counter_{{$key+1}}"
+                                    <input type="hidden" id="product-{{$product->id}}id_{{$key+1}}"
+                                           value="{{$product->id}}">
+                                    <input type="hidden" id="product-{{$product->id}}category_{{$key+1}}"
+                                           value="{{$category->name}}">
+                                    <input type="hidden" id="product-{{$product->id}}cid_{{$key+1}}"
                                            value="{{$productCounter}}">
                                     <input type="hidden" id="product-{{$product->id}}image_{{$key+1}}"
                                            value="{{$product->image}}">
@@ -92,16 +97,26 @@
                                                             {{Form::hidden('type', 0, ['id' => 'type_'.$productCounter])}}
                                                             {{ Form::label('name', $product->name) }}
                                                             <div class="row">
-                                                                {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 10, true, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_10pcs']) }}
-                                                                {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_10pcs', '10 szeletes' . $product->_10pcs_price . '.-') }}
+                                                                {{ Form::radio($productCounter.'_pcs_price', 10, true, ['id' => 'radio_'.$productCounter.'_10pcs']) }}
+                                                                {{ Form::label('radio_'.$productCounter.'_10pcs', '10 szeletes' . $product->_10pcs_price . '.-') }}
                                                             </div>
                                                             <div class="row">
-                                                                {{ Form::radio($productCounter.'_'. $product->id .'_pcs_price', 20, false, ['id' => 'radio_'.$productCounter.'_'.$product->id.'_20pcs']) }}
-                                                                {{ Form::label('radio_'.$productCounter.'_'.$product->id.'_20pcs', '20 szeletes' . $product->_20pcs_price . '.-' ) }}
+                                                                {{ Form::radio($productCounter.'_pcs_price', 20, false, ['id' => 'radio_'.$productCounter.'_20pcs']) }}
+                                                                {{ Form::label('radio_'.$productCounter.'_20pcs', '20 szeletes' . $product->_20pcs_price . '.-' ) }}
                                                             </div>
                                                             <p>
-                                                                <button type="button" class="btn btn-info"
-                                                                        id="{{$productCounter}}">
+                                                                <button type="button" class="btn btn-info orderButton"
+                                                                        data-pcid="{{$productCounter}}"
+                                                                        data-pid="{{$product->id}}"
+                                                                        data-ptype="0"
+                                                                        data-pname="{{$product->name}}"
+                                                                        data-p10pcsprice="{{$product->_10pcs_price}}"
+                                                                        data-p20pcsprice="{{$product->_20pcs_price}}"
+                                                                        data-pdescription="{{$product->description}}"
+                                                                        data-pimage="{{$product->image}}"
+                                                                        data-category="{{$category->name}}"
+
+                                                                >
                                                                     Megrendelem
                                                                 </button>
                                                             </p>
@@ -176,8 +191,20 @@
                                 {{$regularProduct->unit->order_unit}}
                             </div>
                             <div class="col-xs-24 col-sm-4 col-md-4">
-                                <button type="submit" class="btn btn-info" data-toggle="modal" data-target="#myModal"
-                                        id="{{$productCounter}}">Megrendelem
+                                <button type="button" class="btn btn-info orderButton"
+                                        data-pcid="{{$productCounter}}"
+                                        data-pid="{{$regularProduct->id}}"
+                                        data-ptype="99"
+                                        data-pname="{{$regularProduct->name}}"
+                                        data-pprice="{{$regularProduct->price}}"
+                                        data-punit="{{$regularProduct->unit->unit}}"
+                                        data-porderunit="{{$regularProduct->unit->order_unit}}"
+                                        data-pchangenumber="{{$regularProduct->unit->change_number}}"
+                                        data-pdescription="{{$regularProduct->description}}"
+                                        data-pimage="{{$regularProduct->image}}"
+
+                                >
+                                    Megrendelem
                                 </button>
                             </div>
                             {{Form::close()}}
@@ -234,11 +261,29 @@
 
             console.log(counter);
 
+            var pcid = $(pre + 'cid_' + id).val();
+            var pid = $(pre + 'id_' + id).val();
             var name = $(pre + 'name_' + id).val();
+            var img = $(pre + 'image_' + id).val();
             var image = $(ob).find(".cake-img").html();
             var description = $(pre + 'description_' + id).val();
             var _10pcs_price = $(pre + '_10pcs_price_' + id).val();
             var _20pcs_price = $(pre + '_20pcs_price_' + id).val();
+            var category = $(pre + 'category_' + id).val();
+
+
+            var button =
+                    '<button type="button" class="btn btn-info orderButton" id="megrendelButton" ' +
+                    'data-pcid="' + pcid + '" ' +
+                    'data-pid="' + pid + '" ' +
+                    'data-ptype="0" ' +
+                    'data-pname="' + name + '" ' +
+                    'data-p10pcsprice="' + _10pcs_price + '" ' +
+                    'data-p20pcsprice="' + _20pcs_price + '" ' +
+                    'data-pdescription="' + description + '" ' +
+                    'data-pimage="' + img + '" ' +
+                    'data-category="' + category + '" ' +
+                    '>Megrendelem</button>';
 
             var template = '<div class="col-xs-24"><div class="well cake-item-details">' +
                     '<div class="row">' +
@@ -250,30 +295,80 @@
                     '<div class="row"> <div class="col-xs-24"> ' +
                     '<div class="row"> ' +
                     '<div class="col-xs-12"> ' +
-                    '<p><input type="radio" checked name="_pcs_price_order' + id + '" id="_10_pcs_price_order' + id + '" onchange="choicedCakeSize(id,10)"> <label for="_10_pcs_price_order' + id + '">10 szeletes:' + _10pcs_price + '.-</p> ' +
-                    '<p><input type="radio" name="_pcs_price_order' + id + '" id="_20_pcs_price_order' + id + '" onchange="choicedCakeSize(id,20)"> <label for="_20_pcs_price_order' + id + '">20 szeletes:' + _20pcs_price + '.-</p> ' +
+                    '<p><input type="radio" checked name="_pcs_price_order' + id + '" id="_10_pcs_price_order' + id + '" onchange="choicedCakeSize(10)"> <label for="_10_pcs_price_order' + id + '">10 szeletes:' + _10pcs_price + '.-</p> ' +
+                    '<p><input type="radio" name="_pcs_price_order' + id + '" id="_20_pcs_price_order' + id + '" onchange="choicedCakeSize(20)"> <label for="_20_pcs_price_order' + id + '">20 szeletes:' + _20pcs_price + '.-</p> ' +
                     '</div> ' +
                     '<div class="col-xs-12"> ' +
-                    '<button id="megrendelBtn" value="' + counter + '" type="button" class="btn btn-info"' +
-                    '>Megrendelem</button> ' +
+                    button +
                     '</div> </div> </div> </div> </div> ' +
                     '<div class="col-xs-1">></div> </div> </div></div> ';
 
             return template;
         }
 
-        function choicedCakeSize(id, value) {
-            console.log('id: ' + id + ' ,change value to ' + value);
-            $('#choiced-cake-quantity-' + id).val(value);
+        function choicedCakeSize(value) {
+            console.log('change value to ' + value);
+            $('#radio_cake_pcs').val(value);
         }
 
-        function valami(id) {
-            var s = $('#choiced-cake-quantity-' + id).val();
-            console.log('klikk: ' + id + ' ---> ' + s);
-        }
 
         $(function () {
 
+            var actualProduct = null;
+
+            $('.orderButton').on('click', function () {
+
+                orderProduct(this);
+
+            });
+
+            window.orderProduct = function (obj) {
+
+                var product = null;
+
+                var obj = $(obj);
+
+                if (obj.attr('data-ptype') === '0') {
+
+                    console.log('rp');
+
+                    product = {
+                        cid: obj.attr('data-pcid'),
+                        id: obj.attr('data-pid'),
+                        type: obj.attr('data-ptype'),
+                        name: obj.attr('data-pname'),
+                        _10pcs_price: obj.attr('data-p10pcsprice'),
+                        _20pcs_price: obj.attr('data-p20pcsprice'),
+                        description: obj.attr('data-pdescription'),
+                        image: obj.attr('data-pimage'),
+                        category: obj.attr('data-category')
+
+                    };
+
+                }
+                else {
+                    console.log('up');
+                    product = {
+                        cid: obj.attr('data-pcid'),
+                        id: obj.attr('data-pid'),
+                        type: obj.attr('data-ptype'),
+                        name: obj.attr('data-pname'),
+                        unit: obj.attr('data-punit'),
+                        orderUnit: obj.attr('data-porderunit'),
+                        price: obj.attr('data-pprice'),
+                        changeNumber: obj.attr('data-pchangenumber'),
+                        description: obj.attr('data-pdescription'),
+                        image: obj.attr('data-pimage')
+
+                    };
+                }
+
+                console.dir(product);
+
+                actualProduct = product;
+
+                megrendelModal(product);
+            };
 
             $(".cake-item").click(function () {
 
@@ -297,116 +392,13 @@
                 }
                 $(this).parent().find(".cake-item[data-id=" + last + "]").after(template);
 
-                $("#megrendelBtn").click(function () {
 
-                    console.log("hurrá rákkat a " + $(this).val() + " értékű buttonra");
-                    megrendelmodal(this);
+                $("#megrendelButton").click(function () {
+
+                    // console.log("hurrá rákkat a " + $(this).val() + " értékű buttonra");
+                    orderProduct(this);
                 });
             });
-
-        });
-
-        function megrendelmodal(ob) {
-
-
-            $('#modal-order-succes').hide();
-            $('#modal-order-error').hide();
-
-            // console.log('id: ' + $(this).val());
-
-            // $('#myModal').dialog('open');
-            pCounter = $(ob).val();
-            console.log("itt");
-            console.log('btn id: ' + pCounter);
-
-            $('#modal-email-error').hide();
-            $('#modal-name-error').hide();
-            $('#modal-quantity-error').hide();
-
-            // console.log(this.id);
-            inp = $('#inp_' + pCounter).val();
-            var pid = $('#id_' + pCounter).val();
-            var type = $('#type_' + pCounter).val();
-
-            /*
-             var name = $('#name_' + this.id).val();
-             console.dir(inp);
-             console.dir(pid);
-
-             console.dir(type);
-             console.log(name);
-             */
-
-            // console.log('type: ' + type);
-
-            $.ajax({
-                url: "getProduct/" + pid + "/" + type,
-                cache: false,
-                success: function (response) {
-
-                    actualProduct = response;
-
-
-                    //                        console.dir(response);
-
-                    var orderDescription = orderProductText(response, inp);
-                    //
-                    //                        console.log('actual: ');
-                    //                        console.dir(actualProduct);
-
-                    $('#modal-order-description').html(orderDescription);
-
-                    if (actualProduct.hasOwnProperty('unit_id')) {
-
-                        $('#modal-quantity').val(inp);
-
-                        //$('#myModal').dialog('open');
-                        $('#modal-cake-slice-price').hide();
-                        $('#modal-quantity-div').show();
-
-                    }
-                    else {
-                        console.log('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price');
-
-                        console.log('pcs: ' + $('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price' + ']:checked', '#form-' + pCounter).val());
-
-                        if ($('input[name=' + pCounter + '_' + actualProduct.id + '_pcs_price' + ']:checked', '#form-' + pCounter).val() == 10) {
-                            console.log('checked 10');
-                            $('#modal-pcs').val(10);
-                            $("#modal-cake-pcs-10").prop("checked", true);
-                        }
-                        else {
-                            console.log('not checked 10');
-                            $('#modal-pcs').val(20);
-                            $("#modal-cake-pcs-20").prop("checked", true);
-                        }
-
-                        console.log(actualProduct._10pcs_price);
-                        console.log(actualProduct._20pcs_price);
-
-                        $('#modal-cake-slice-price').show();
-                        $('#modal-quantity-div').hide();
-
-                        $('#modal-pcs-10-label').html(actualProduct._10pcs_price);
-                        $('#modal-pcs-20-label').html(actualProduct._20pcs_price);
-
-
-                    }
-
-                    $('#myModal').modal('show');
-                }
-            });
-
-            return false;
-        }
-        var pCounter = null;
-        var actualProduct = null;
-        var inp = null;
-
-
-        $(function () {
-
-
 
 
             $('#modal-order-btn').on('click', function () {
@@ -442,6 +434,123 @@
                 var orderDescription = orderProductText(actualProduct, $('#modal-quantity').val());
                 $('#modal-order-description').html(orderDescription);
             });
+
+
+        });
+
+
+        function modalInit(product, inp, orderDescription) {
+
+            console.log('modal init: ' + inp);
+            console.dir(product);
+            console.dir(orderDescription);
+
+
+            $('#modal-order-succes').hide();
+            $('#modal-order-error').hide();
+
+            $('#modal-email-error').hide();
+            $('#modal-name-error').hide();
+            $('#modal-quantity-error').hide();
+
+            $('#modal-order-description').html(orderDescription);
+
+            if (product.type > 10) {
+
+                $('#modal-quantity').val(inp);
+
+                //$('#myModal').dialog('open');
+                $('#modal-cake-slice-price').hide();
+                $('#modal-quantity-div').show();
+
+            }
+            else {
+
+                if (inp == 10) {
+                    console.log('checked 10');
+                    $('#modal-pcs').val(10);
+                    $("#modal-cake-pcs-10").prop("checked", true);
+                }
+                else if (inp == 20) {
+
+                    $('#modal-pcs').val(20);
+                    $("#modal-cake-pcs-20").prop("checked", true);
+                }
+                else {
+                    $('#modal-pcs').val(10);
+                    $("#modal-cake-pcs-10").prop("checked", true);
+
+                }
+
+
+                $('#modal-cake-slice-price').show();
+                $('#modal-quantity-div').hide();
+
+                $('#modal-pcs-10-label').html(product._10pcs_price);
+                $('#modal-pcs-20-label').html(product._20pcs_price);
+
+
+                $('#myModal').modal('show');
+
+            }
+        }
+
+        function getQuantity(product) {
+            var inp = 0;
+
+            if (product.type == 0) {
+
+                inp = $('#radio_cake_pcs').val();
+            }
+            else if (product.type == 1) {
+                //'radio_'.$productCounter.'_10pcs'
+                //$("#radio_1").prop("checked", true)
+
+                _10pcs = $('#radio_' + product.cid + '_10pcs').is(":checked");
+                if (_10pcs == true) {
+                    inp = 10;
+                }
+                else {
+                    _20pcs = $('#radio_' + product.cid + '_20pcs').is(":checked");
+
+                    if (_20pcs == true) {
+                        inp = 20;
+                    }
+                    else {
+                        inp = 10;
+                    }
+                }
+            }
+            else {
+
+                inp = $('#inp_' + product.cid).val();
+            }
+
+
+            return inp;
+        }
+
+        function megrendelModal(product) {
+
+            var quantity = getQuantity(product);
+
+
+            var orderDescription = orderProductText(product, quantity);
+
+
+            modalInit(product, quantity, orderDescription);
+
+            $('#myModal').modal('show');
+
+
+            return false;
+        }
+
+
+        $(function () {
+
+
+
 
 
         });
@@ -509,7 +618,7 @@
 
             var _quantity = 0;
 
-            if (product.hasOwnProperty('unit_id')) {
+            if (product.type > 10) {
                 _quantity = $('#modal-quantity').val();
             }
             else {
@@ -524,7 +633,7 @@
 
             var pType = 0;
 
-            if (product.hasOwnProperty('unit_id')) {
+            if (product.type > 10) {
                 pType = 1;
             }
 
@@ -569,19 +678,23 @@
             //            console.log('product: ');
             //            console.dir(product);
 
+            console.log('mennyiség: ' + inp);
+
             var result = 'Termék neve: ';
 
-            if (!product.hasOwnProperty('unit_id')) {
+            console.dir(product);
 
-                return result + product.categories[0].name + ' - ' + product.name;
+            if (product.type == 0 || product.type == 1) {
+
+                return result + product.category + ' - ' + product.name;
             }
             else {
                 result += product.name + '<br>Termék ára:' + product.price;
-                result += '.-' + product.unit.unit + "<br>Kívánt mennyiség: " + inp + " " + product.unit.order_unit + "<br>"
+                result += '.-' + product.unit + "<br>Kívánt mennyiség: " + inp + " " + product.orderUnit + "<br>"
                         + "Ára: ";
                 if (validateQuantity()) {
 
-                    result += ((product.price / product.unit.change_number) * inp) + ' Ft.';
+                    result += ((product.price / product.changeNumber) * inp) + ' Ft.';
 
                 }
                 else {

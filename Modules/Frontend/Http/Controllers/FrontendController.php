@@ -5,6 +5,7 @@ namespace Modules\Frontend\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Modules\Category\Entities\Category;
 use Modules\Order\Emails\OrderCustomerEmail;
+use Modules\Order\Entities\Order;
 use Modules\Product\Entities\Product;
 use Modules\ProductWithUnit\Entities\RegularProduct;
 use Illuminate\Http\Request;
@@ -43,13 +44,38 @@ class FrontendController extends Controller
 
     public function aboutUs()
     {
-        return 'about Us';
+        $id = 1;
+
+        $pType = 0;
+
+        $quantity = 10;
+        $email = 'norbert.guta@gmail.com';
+        $name = 'Norbert';
+        $comment = 'blalaa komment';
+        $phone = '3023435343';
+
+        $product = $this->getProductByType($id, $pType);
+
+//        Order::create([
+//            'email' => $email,
+//            'name' => $name,
+//            'comment' => $comment,
+//            'product' => $product->id,
+//            'pType' => $pType,
+//            'quantity' => $quantity
+//        ]);
+
+
+        $amount = $this->calculatePrice($product, $quantity, $pType);
+        return view('order::mail.orderOwner',
+            compact('product', 'email', 'name', 'comment', 'quantity', 'amount', 'phone', 'pType'));
 
     }
 
     public function contact()
     {
-        return view('frontend::frontend.contact');
+
+        return 'contact';
     }
 
     public function sweetShop()
@@ -79,5 +105,26 @@ class FrontendController extends Controller
         return view('frontend::frontend.order');
     }
 
+    public function calculatePrice($product, $quantity, $pType)
+    {
+        if ($pType == 0 || $pType == 1) {
+            return ($quantity == 10) ? $product->_10pcs_price :
+                ($quantity == 20) ? $product->_20pcs_price : "Hiba történt az ár kiszámítása közben!";
+        } else {
+            return ($product->price / $product->unit->change_number) * $quantity;
+        }
+
+    }
+
+
+    public function getProductByType($id, $pType)
+    {
+
+        if ($pType == 0 || $pType == 1) {
+            return Product::with('categories')->whereId($id)->get()->first();
+        } else {
+            return RegularProduct::with('unit')->whereId($id)->get()->first();
+        }
+    }
 
 }

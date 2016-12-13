@@ -3,7 +3,35 @@
 
     <meta charset="utf-8">
 
-    <link rel="stylesheet" href="{{asset('modules/order/css/email.css')}}">
+    <style>
+
+        .content {
+            width: 90%;
+        }
+
+        .parent {
+            display: flex;
+            padding-bottom: 5px;
+        }
+
+        .narrow {
+            width: 200px;
+            /* Just so it's visible */
+        }
+
+        .wide {
+            flex: 1;
+        }
+
+        .logo {
+            width: 100%;
+            height: auto;
+        }
+
+
+    </style>
+
+
 </head>
 
 <body>
@@ -12,35 +40,89 @@
 
         <div class="col-xs-24">
 
-            <p class="email-title">Tisztelt {{$name}}!</p>
+            <h2>Rendelés - Ibolya cukrászda</h2>
 
-            <p class="email-aim">Rendelését rögzítettük, felfogjuk venni önnel a kapcsolatot.</p>
+            <img src="{{url('/public/modules/order/image/mail/mail_logo.jpg')}}" alt="ibolya cukrászda logó"
+                 class="logo"/>
 
-            <label class="email-product-name">{{$product->name}}</label> termékből {{$quantity}}
-            @if(get_class($product) == "RegularProduct")
+            <div class="content">
 
-                {{$product->unit->unit}}
+                <h3>Termék adatai</h3>
 
-                mennyiséget rendelt.
+                <div class="parent">
+                    <div class="narrow">
+                        <label>
+                            Kategória - név:
 
-            @else
+                        </label>
+                    </div>
+                    <div class="wide">
+                        <label>
 
-                @if($quantity == 10)
+                            @if($pType > 10)
+                                Édes és Sós sütemények -
+                            @else
 
-                    10
-                @else
-                    20
-                @endif
-                szeletes torta.
+                                {{$product->categories->first()->name}} -
+                            @endif
+                            <label class="email-product-name">{{$product->name}}</label> termékből.
 
-            @endif
 
-            <div class="col-xs-6 email-img">
-                <img src="http://www.bbcgoodfood.com/sites/default/files/styles/recipe/public/user-collections/my-colelction-image/2015/12/recipe-image-legacy-id--364184_10.jpg?itok=eWj2NFNK"
-                     alt="cake">
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="parent">
+                    <div class="narrow">
+                        <label>Mennyiség: </label>
+                    </div>
+                    <div class="wide">
+                        <label>{{$quantity}}
+                            @if($pType > 10)
+
+                                {{$product->unit->unit}}
+
+                            @else
+
+                                szeletes
+
+                            @endif
+
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="parent">
+                    <div class="narrow">
+                        <label>Termék ára: </label>
+                    </div>
+                    <div class="wide">
+                        <label>
+                            @if($pType > 10)
+
+                                {{$product->price}}
+
+                            @else
+
+
+                                @if($quantity == 10)
+                                    {{$product->_10pcs_price}}
+                                @else
+                                    {{$product->_20pcs_price}}
+                                @endif
+
+                            @endif
+                            .- Ft
+                        </label>
+                    </div>
+                </div>
+
+                <p>Köszönjük rendelését!</p>
+                <p>Munkatársunk, hamarosan fel veszi önnel a kapcsolatot.</p>
+
             </div>
-            <p>Rendelés összege: {{$amount}} Ft</p>
-            <p>Megjegyzés: {{$comment}}</p>
 
         </div>
 
@@ -49,9 +131,6 @@
 
 </div>
 
-
-<br>
-Köszönjük a rendelését!
 
 </body>
 

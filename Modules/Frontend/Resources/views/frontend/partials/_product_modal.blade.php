@@ -82,7 +82,7 @@
                     <div class="col-xs-16 col-xs-offset-4">
 
                         Köszönjük rendelését!<br>
-                        Munkatársunk felfogja venni önnel a kapcsolatot.
+                        Munkatársunk fel fogja venni önnel a kapcsolatot.
 
                     </div>
 

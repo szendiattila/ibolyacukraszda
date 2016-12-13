@@ -29,6 +29,7 @@ class OrderController extends Controller
         $email = $request->get('email');
         $name = $request->get('name', 'no name');
         $comment = $request->get('comment');
+        $phone = 'Nincs';
 
         $product = $this->getProductByType($id, $pType);
 
@@ -44,9 +45,16 @@ class OrderController extends Controller
 
         $amount = $this->calculatePrice($product, $quantity, $pType);
 
-        $data = ['product' => $product, 'pType' => $pType, 'quantity' => $quantity,
-            'name' => $name, 'comment' => $comment,
-            'email' => $email, 'amount' => $amount];
+        $data = [
+            'product' => $product,
+            'pType' => $pType,
+            'quantity' => $quantity,
+            'name' => $name,
+            'comment' => $comment,
+            'email' => $email,
+            'amount' => $amount,
+            'phone' => $phone
+        ];
 
         $this->sendMail('order::mail.orderOwner', $email, $data);
         $this->sendMail('order::mail.orderCustomer', $email, $data);
@@ -77,7 +85,7 @@ class OrderController extends Controller
 
     public function calculatePrice($product, $quantity, $pType)
     {
-        if ($pType == 0) {
+        if ($pType == 0 || $pType == 1) {
             return ($quantity == 10) ? $product->_10pcs_price :
                 ($quantity == 20) ? $product->_20pcs_price : "Hiba történt az ár kiszámítása közben!";
         } else {
@@ -90,7 +98,7 @@ class OrderController extends Controller
     public function getProductByType($id, $pType)
     {
 
-        if ($pType == 0) {
+        if ($pType == 0 || $pType == 1) {
             return Product::with('categories')->whereId($id)->get()->first();
         } else {
             return RegularProduct::with('unit')->whereId($id)->get()->first();
