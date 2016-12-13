@@ -20,7 +20,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/dashboard/">Főoldal</a>
+                    <a href="/dashboard/order">Rendelések</a>
                 </li>
 
                 <li>
@@ -39,9 +39,11 @@
                     <a href="/dashboard/page">Oldalak</a>
                 </li>
 
+
                 <li>
                     <a href="/dashboard/menu">Menükezelő</a>
                 </li>
+
             </ul>
 
             <!-- Right Side Of Navbar -->

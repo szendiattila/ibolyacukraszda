@@ -41,13 +41,15 @@
         <div class="col-xs-24">
 
             <h2>Rendelés - Ibolya cukrászda</h2>
-
-            <img src="{{url('/public/modules/order/image/mail/mail_logo.jpg')}}" alt="ibolya cukrászda logó"
-                 class="logo"/>
+            <img src="
+            @php
+                url('/public/modules/order/image/mail/mail_logo.jpg')
+            @endphp" class="logo">
 
             <div class="content">
 
                 <h3>Termék adatai</h3>
+
 
                 <div class="parent">
                     <div class="narrow">
@@ -115,6 +117,20 @@
 
                             @endif
                             .- Ft
+                        </label>
+                    </div>
+                </div>
+
+                <div class="parent">
+                    <div class="narrow">
+                        <label>
+                            Rendelés azonosító:
+
+                        </label>
+                    </div>
+                    <div class="wide">
+                        <label>
+                            {{$orderId}}
                         </label>
                     </div>
                 </div>

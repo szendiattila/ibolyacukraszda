@@ -17,6 +17,7 @@ class CreateUnitsTable extends Migration
             $table->string('unit');
             $table->string('order_unit');
             $table->integer('change_number');
+            $table->integer('pType')->default(99);
 
             $table->timestamps();
         });

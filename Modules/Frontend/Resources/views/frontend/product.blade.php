@@ -108,7 +108,7 @@
                                                                 <button type="button" class="btn btn-info orderButton"
                                                                         data-pcid="{{$productCounter}}"
                                                                         data-pid="{{$product->id}}"
-                                                                        data-ptype="0"
+                                                                        data-ptype={{$product->type}}
                                                                         data-pname="{{$product->name}}"
                                                                         data-p10pcsprice="{{$product->_10pcs_price}}"
                                                                         data-p20pcsprice="{{$product->_20pcs_price}}"
@@ -328,7 +328,26 @@
 
                 var obj = $(obj);
 
-                if (obj.attr('data-ptype') === '0') {
+
+                if (obj.attr('data-ptype') > 10) {
+
+
+                    console.log('up');
+                    product = {
+                        cid: obj.attr('data-pcid'),
+                        id: obj.attr('data-pid'),
+                        type: obj.attr('data-ptype'),
+                        name: obj.attr('data-pname'),
+                        unit: obj.attr('data-punit'),
+                        orderUnit: obj.attr('data-porderunit'),
+                        price: obj.attr('data-pprice'),
+                        changeNumber: obj.attr('data-pchangenumber'),
+                        description: obj.attr('data-pdescription'),
+                        image: obj.attr('data-pimage')
+
+                    };
+                }
+                else {
 
                     console.log('rp');
 
@@ -346,22 +365,6 @@
                     };
 
                 }
-                else {
-                    console.log('up');
-                    product = {
-                        cid: obj.attr('data-pcid'),
-                        id: obj.attr('data-pid'),
-                        type: obj.attr('data-ptype'),
-                        name: obj.attr('data-pname'),
-                        unit: obj.attr('data-punit'),
-                        orderUnit: obj.attr('data-porderunit'),
-                        price: obj.attr('data-pprice'),
-                        changeNumber: obj.attr('data-pchangenumber'),
-                        description: obj.attr('data-pdescription'),
-                        image: obj.attr('data-pimage')
-
-                    };
-                }
 
                 console.dir(product);
 
@@ -371,6 +374,12 @@
             };
 
             $(".cake-item").click(function () {
+
+               // $("#myModal").on("hidden.bs.modal", function () {}
+
+                $('#radio_cake_pcs').val(10);
+
+
 
                 $(".cake-item-details").remove();
                 var di = $(this).attr("data-id");
@@ -398,6 +407,7 @@
                     // console.log("hurrá rákkat a " + $(this).val() + " értékű buttonra");
                     orderProduct(this);
                 });
+
             });
 
 
@@ -505,6 +515,8 @@
             else if (product.type == 1) {
                 //'radio_'.$productCounter.'_10pcs'
                 //$("#radio_1").prop("checked", true)
+                //radio_75_10pcs
+
 
                 _10pcs = $('#radio_' + product.cid + '_10pcs').is(":checked");
                 if (_10pcs == true) {
@@ -631,11 +643,6 @@
             console.log('send order: ' + result);
 
 
-            var pType = 0;
-
-            if (product.type > 10) {
-                pType = 1;
-            }
 
 
             $.ajax({
@@ -644,7 +651,7 @@
                 data: {
                     product: product.id,
                     quantity: _quantity,
-                    pType: pType,
+                    pType: product.type,
                     email: $('#modal-email').val(),
                     name: $('#modal-name').val(),
                     comment: $('#modal-comment').val()
@@ -684,11 +691,8 @@
 
             console.dir(product);
 
-            if (product.type == 0 || product.type == 1) {
+            if (product.type > 10) {
 
-                return result + product.category + ' - ' + product.name;
-            }
-            else {
                 result += product.name + '<br>Termék ára:' + product.price;
                 result += '.-' + product.unit + "<br>Kívánt mennyiség: " + inp + " " + product.orderUnit + "<br>"
                         + "Ára: ";
@@ -702,6 +706,11 @@
                 }
 
                 return result;
+
+            }
+            else {
+                return result + product.category + ' - ' + product.name;
+
             }
 
 

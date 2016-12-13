@@ -16,10 +16,12 @@ class CreateOrdersTable extends Migration
             $table->increments('id');
             $table->string('email');
             $table->string('name');
+            $table->string('phone')->nullable();
             $table->string('comment')->nullable();
             $table->integer('product');
             $table->tinyInteger('pType');
             $table->integer('quantity');
+            $table->integer('amount');
 
             $table->timestamps();
         });

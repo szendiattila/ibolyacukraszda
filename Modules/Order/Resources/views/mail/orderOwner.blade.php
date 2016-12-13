@@ -152,6 +152,20 @@
                 </div>
 
 
+                <div class="parent">
+                    <div class="narrow">
+                        <label>
+                            Rendelés azonosító:
+
+                        </label>
+                    </div>
+                    <div class="wide">
+                        <label>
+                            {{$orderId}}
+                        </label>
+                    </div>
+                </div>
+
             </div>
 
         </div>

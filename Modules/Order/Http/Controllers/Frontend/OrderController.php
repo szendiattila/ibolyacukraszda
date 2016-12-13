@@ -21,9 +21,11 @@ class OrderController extends Controller
     public function orderAjax(OrderRequest $request)
     {
 
+
         $id = $request->get('product', '0');
 
         $pType = $request->get('pType', '0');
+
 
         $quantity = $request->get('quantity', 'no quantity');
         $email = $request->get('email');
@@ -33,17 +35,18 @@ class OrderController extends Controller
 
         $product = $this->getProductByType($id, $pType);
 
-        Order::create([
+        $amount = $this->calculatePrice($product, $quantity, $pType);
+
+        $order = Order::create([
             'email' => $email,
             'name' => $name,
             'comment' => $comment,
             'product' => $product->id,
             'pType' => $pType,
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'amount' => $amount
         ]);
 
-
-        $amount = $this->calculatePrice($product, $quantity, $pType);
 
         $data = [
             'product' => $product,
@@ -53,7 +56,8 @@ class OrderController extends Controller
             'comment' => $comment,
             'email' => $email,
             'amount' => $amount,
-            'phone' => $phone
+            'phone' => $phone,
+            'orderId' => $order->id
         ];
 
         $this->sendMail('order::mail.orderOwner', $email, $data);
@@ -85,11 +89,13 @@ class OrderController extends Controller
 
     public function calculatePrice($product, $quantity, $pType)
     {
-        if ($pType == 0 || $pType == 1) {
-            return ($quantity == 10) ? $product->_10pcs_price :
-                ($quantity == 20) ? $product->_20pcs_price : "Hiba történt az ár kiszámítása közben!";
-        } else {
+        if ($pType > 10) {
             return ($product->price / $product->unit->change_number) * $quantity;
+        } else {
+
+            return ($quantity == 10) ? $product->_10pcs_price :
+                (($quantity == 20) ? $product->_20pcs_price : "Hiba történt az ár kiszámítása közben!");
+
         }
 
     }

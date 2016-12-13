@@ -44,31 +44,7 @@ class FrontendController extends Controller
 
     public function aboutUs()
     {
-        $id = 1;
-
-        $pType = 0;
-
-        $quantity = 10;
-        $email = 'norbert.guta@gmail.com';
-        $name = 'Norbert';
-        $comment = 'blalaa komment';
-        $phone = '3023435343';
-
-        $product = $this->getProductByType($id, $pType);
-
-//        Order::create([
-//            'email' => $email,
-//            'name' => $name,
-//            'comment' => $comment,
-//            'product' => $product->id,
-//            'pType' => $pType,
-//            'quantity' => $quantity
-//        ]);
-
-
-        $amount = $this->calculatePrice($product, $quantity, $pType);
-        return view('order::mail.orderOwner',
-            compact('product', 'email', 'name', 'comment', 'quantity', 'amount', 'phone', 'pType'));
+        return 'aboutUs';
 
     }
 

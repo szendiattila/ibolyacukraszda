@@ -1,10 +1,11 @@
 <?php
 
-namespace Modules\Order\Http\Controllers;
+namespace Modules\Order\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\Order\Entities\Order;
 
 class OrderController extends Controller
 {
@@ -14,7 +15,10 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('order::index');
+
+        $orders = Order::all();
+
+        return view('order::dashboard.index', compact('orders'));
     }
 
     /**
@@ -57,7 +61,12 @@ class OrderController extends Controller
      * Remove the specified resource from storage.
      * @return Response
      */
-    public function destroy()
+    public function destroy($id)
     {
+        $order = Order::find($id);
+        if(isset($order) ){
+            $order->delete();
+        }
+
     }
 }
