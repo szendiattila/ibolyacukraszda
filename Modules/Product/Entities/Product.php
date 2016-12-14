@@ -4,6 +4,7 @@ namespace Modules\Product\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Category\Entities\Category;
+use Modules\Order\Entities\Order;
 
 class Product extends Model
 {
@@ -17,5 +18,10 @@ class Product extends Model
     public function getCategoryListAttribute()
     {
         return $this->categories->pluck('id')->all();
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class);
     }
 }

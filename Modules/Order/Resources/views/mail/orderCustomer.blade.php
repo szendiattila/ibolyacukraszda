@@ -26,6 +26,8 @@
         .logo {
             width: 100%;
             height: auto;
+            padding: 0px;
+            margin: 0px;
         }
 
 
@@ -43,7 +45,7 @@
             <h2>Rendelés - Ibolya cukrászda</h2>
             <img src="
             @php
-                url('/public/modules/order/image/mail/mail_logo.jpg')
+                $message->embed(url('/public/modules/order/image/mail/mail_logo.jpg'))
             @endphp" class="logo">
 
             <div class="content">
@@ -67,7 +69,7 @@
 
                                 {{$product->categories->first()->name}} -
                             @endif
-                            <label class="email-product-name">{{$product->name}}</label> termékből.
+                            <label class="email-product-name">{{$product->name}}</label>
 
 
                         </label>

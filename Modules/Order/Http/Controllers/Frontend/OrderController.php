@@ -48,6 +48,12 @@ class OrderController extends Controller
         ]);
 
 
+        //$product->categories()->sync($request->input('category_list'));
+        if ($pType > 10) {
+            $order->regularProducts()->sync([$product->id]);
+        } else {
+            $order->products()->sync([$product->id]);
+        }
         $data = [
             'product' => $product,
             'pType' => $pType,
@@ -59,6 +65,7 @@ class OrderController extends Controller
             'phone' => $phone,
             'orderId' => $order->id
         ];
+
 
         $this->sendMail('order::mail.orderOwner', $email, $data);
         $this->sendMail('order::mail.orderCustomer', $email, $data);

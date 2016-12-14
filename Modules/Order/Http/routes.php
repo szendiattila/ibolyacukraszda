@@ -1,7 +1,9 @@
 <?php
 
-Route::group(['middleware' => 'web', 'prefix' => 'dashboard', 'namespace' => 'Modules\Order\Http\Controllers\Dashboard'], function () {
-    Route::resource('/order', 'OrderController');
+Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'dashboard', 'namespace' => 'Modules\Order\Http\Controllers\Dashboard'], function () {
+    Route::resource('/order', 'OrderController',
+        ['except' => ['create', 'store', 'update', 'show', 'edit']]
+    );
 });
 
 Route::group(['middleware' => 'web', 'namespace' => 'Modules\Order\Http\Controllers\Frontend'], function () {

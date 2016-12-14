@@ -27,10 +27,6 @@ class ProductWithUnitController extends Controller
 
     public function store(ProductWithUnitRequest $request)
     {
-        $imageName = FileUploadController::storeImage($request, 'image', 'product', true, 200, 200);
-
-        $request->request->add(['image' => $imageName]);
-
         RegularProduct::create($request->input());
 
         return redirect('dashboard/productwithunit');
@@ -45,7 +41,6 @@ class ProductWithUnitController extends Controller
 
     public function update(RegularProduct $productwithunit, ProductWithUnitRequest $request)
     {
-        $this->handleImage($productwithunit, $request);
 
         $productwithunit->update($request->input());
 
@@ -54,33 +49,9 @@ class ProductWithUnitController extends Controller
 
     public function destroy(RegularProduct $productwithunit)
     {
-        $this->deleteImage($productwithunit);
-
         $productwithunit->delete();
 
         return redirect('dashboard/productwithunit');
     }
 
-    /**
-     * @param RegularProduct $product
-     * @param Request $request
-     */
-    private function handleImage(RegularProduct $product, Request $request)
-    {
-        if ($request->file('image')) {
-            $this->deleteImage($product);
-
-            $newImageName = FileUploadController::storeImage($request, 'image', 'product', true);
-
-            $request->request->add(['image' => $newImageName]);
-        }
-    }
-
-    /**
-     * @param RegularProduct $product
-     */
-    private function deleteImage(RegularProduct $product)
-    {
-        FileUploadController::removeFile($product->image, 'product', true);
-    }
 }

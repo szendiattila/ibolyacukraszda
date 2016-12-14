@@ -14,7 +14,6 @@ $modul = 'productwithunit';
             <tr>
                 <th>#</th>
                 <th>Megnevezés</th>
-                <th>Kép</th>
                 <th>Létrehozva</th>
                 <th>Legutolsó Módosítás</th>
                 <th>Műveletek</th>
@@ -28,7 +27,6 @@ $modul = 'productwithunit';
                 <tr>
                     <td><a href="product/{{ $product->id }}/edit">{{ ++$productCounter }}</a></td>
                     <td>{{ $product->name }}</td>
-                    <td><img src="{{asset('images/productwithunit/tn-'.$product->image)}}" height="50px"></td>
                     <td>{{ $product->created_at }} - {{ $product->created_at->diffForHumans() }}</td>
                     <td>{{ $product->updated_at }} - {{ $product->updated_at->diffForHumans() }}</td>
                     <td>  @include('dashboard::layouts.partials._row_actions_min',['row_id'=> $product->id]) </td>

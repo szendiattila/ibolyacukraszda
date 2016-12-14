@@ -22,6 +22,15 @@ class CreateRegularProductsTable extends Migration
 
             $table->timestamps();
         });
+
+        Schema::create('order_regular_product', function (Blueprint $table) {
+            $table->integer('order_id')->unsigned()->index();
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+
+            $table->integer('regular_product_id')->unsigned()->index();
+            $table->foreign('regular_product_id')->references('id')->on('regular_products')->onDelete('cascade');
+        });
+
     }
 
     /**

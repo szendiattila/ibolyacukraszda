@@ -5,7 +5,9 @@ namespace Modules\Order\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Modules\Order\Entities\Order;
+use Modules\Product\Entities\Product;
 
 class OrderController extends Controller
 {
@@ -16,7 +18,16 @@ class OrderController extends Controller
     public function index()
     {
 
-        $orders = Order::all();
+        $orders1 = Order::with('products', 'products.categories')->where('pType', '<=', 10)->get();
+        $orders2 = Order::with('regularProducts', 'regularProducts.unit')->where('pType', '>', 10)->get();
+
+
+        $orders = $orders1->merge($orders2);
+        $orders->sortByDesc('created_at');
+
+
+        //dd($orders->values()->all());
+
 
         return view('order::dashboard.index', compact('orders'));
     }
@@ -64,9 +75,15 @@ class OrderController extends Controller
     public function destroy($id)
     {
         $order = Order::find($id);
+
         if(isset($order) ){
-            $order->delete();
+            $delete = $order->delete();
         }
+
+
+        $mess = ($delete) ? "<div class='alert alert-success'>Sikeres törlés</div>" : "<div class='alert alert-warning'>Nem sikerült törölni.</div>";
+
+        return redirect()->back()->with('orderMessage', $mess);
 
     }
 }

@@ -97,7 +97,7 @@
 
                                 {{$product->categories->first()->name}} -
                             @endif
-                            <label class="email-product-name">{{$product->name}}</label> termékből.
+                            <label class="email-product-name">{{$product->name}}</label>
 
 
                         </label>
