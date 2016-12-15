@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use Modules\Category\Entities\Category;
+use Modules\Category\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -34,7 +35,7 @@ class CategoryController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         Category::create($request->all());
 
@@ -57,7 +58,7 @@ class CategoryController extends Controller
      * @param Category $category
      * @return Response
      */
-    public function update(Category $category, Request $request)
+    public function update(Category $category, CategoryRequest $request)
     {
         $category->update($request->all());
 

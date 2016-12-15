@@ -6,7 +6,7 @@ $modul = 'page';
 @section('title', config('ibolya.title_prefix') . 'Oldal kezelő')
 
 @section('content')
-    <h1>Torták:</h1>
+    <h1>Oldalak:</h1>
     <div><a class="btn btn-success" href="{{ url('dashboard/page/create') }}">Új oldal hozzáadása</a></div>
     @if(count($pages) > 0)
         <table class="table table-responsive">

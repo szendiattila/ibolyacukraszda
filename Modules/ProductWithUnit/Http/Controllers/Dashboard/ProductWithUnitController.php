@@ -29,7 +29,7 @@ class ProductWithUnitController extends Controller
     {
         RegularProduct::create($request->input());
 
-        return redirect('dashboard/productwithunit');
+        return redirect('dashboard/productwithunit')->with('successMessage', 'Sikeres termék felvétel');;
     }
 
     public function edit(RegularProduct $productwithunit)
@@ -44,14 +44,14 @@ class ProductWithUnitController extends Controller
 
         $productwithunit->update($request->input());
 
-        return redirect('dashboard/productwithunit');
+        return redirect('dashboard/productwithunit')->with('successMessage', 'Sikeres termék frissítés');;
     }
 
     public function destroy(RegularProduct $productwithunit)
     {
         $productwithunit->delete();
 
-        return redirect('dashboard/productwithunit');
+        return redirect('dashboard/productwithunit')->with('successMessage', 'Sikeres termék törlés');;
     }
 
 }

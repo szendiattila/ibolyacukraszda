@@ -13,8 +13,20 @@ class ProductWithUnitRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
-            //
+            'name' => 'required',
+            'price' => 'required',
+
+        ];
+
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'Kötelező a termék nevét megadni',
+            'price.required' => 'Kötelező a termék árát megadni',
         ];
     }
 

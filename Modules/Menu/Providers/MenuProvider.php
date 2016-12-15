@@ -19,8 +19,7 @@ class MenuProvider extends ServiceProvider
 
         view()->composer('frontend::layouts.partials._navbar', function($view){
 
-            $menus = Menu::orderBy('order')->get();
-
+            $menus = Menu::all();
 
             $view->with('menus', $menus);
         });

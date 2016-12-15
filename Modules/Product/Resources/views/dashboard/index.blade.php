@@ -1,14 +1,22 @@
 @extends('dashboard::layouts.master')
 @include('dashboard::layouts.partials._confirmation')
 @php
-$modul = 'product';
-$newString = 'Termék';
+    $modul = 'product';
+    $newString = 'Termék';
 @endphp
 @section('title', config('ibolya.title_prefix') . 'Tortakezelő')
 
 @section('content')
     <h1>Torták:</h1>
-    <div><a class="btn btn-success" href="{{ url('dashboard/product/create') }}">Új termék hozzáadása</a></div>
+
+    <div><a class="btn btn-success" href="{{ url('dashboard/product/create') }}">Új termék hozzáadása</a>
+        @if(session()->has('successMessage'))
+            <div class="alert alert-success">
+                {{session()->get('successMessage')}}
+            </div>
+        @endif
+    </div>
+
     @if(count($products) > 0)
         <table class="table table-responsive">
             <thead>
@@ -19,6 +27,7 @@ $newString = 'Termék';
                 <th>10 szeletes ára</th>
                 <th>20 szeletes ára</th>
                 <th>Kép</th>
+                <th>típusa</th>
                 <th>Létrehozva</th>
                 <th>Legutolsó Módosítás</th>
                 <th>Műveletek</th>
@@ -40,6 +49,14 @@ $newString = 'Termék';
                     <td>{{ $product->_10pcs_price . config('ibolya.currency') }}</td>
                     <td>{{ $product->_20pcs_price . config('ibolya.currency') }}</td>
                     <td><img src="{{asset('images/product/tn-'.$product->image)}}" height="50px"></td>
+                    <td>
+                        @if($product->type == 0)
+                            Normál torta
+                        @else
+                            Íz kínálatos torta
+                        @endif
+
+                    </td>
                     <td>{{ $product->created_at }} - {{ $product->created_at->diffForHumans() }}</td>
                     <td>{{ $product->updated_at }} - {{ $product->updated_at->diffForHumans() }}</td>
                     <td>  @include('dashboard::layouts.partials._row_actions_min',['row_id'=> $product->id]) </td>

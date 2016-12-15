@@ -27,6 +27,12 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
+        $categoryId = $request->get('category_list', [0]);
+
+        $type = Category::select('type')->whereId($categoryId)->pluck('type')->first();
+
+        $request->request->add('type', $type);
+
         $imageName = FileUploadController::storeImage($request, 'image', 'product', true, 200, 200);
 
         $request->request->add(['image' => $imageName]);
@@ -35,7 +41,7 @@ class ProductController extends Controller
 
         $product->categories()->sync($request->input('category_list'));
 
-        return redirect('dashboard/product');
+        return redirect('dashboard/product')->with('successMessage', 'Sikeres termék felvétel');
     }
 
     public function edit(Product $product)
@@ -45,15 +51,18 @@ class ProductController extends Controller
         return view('product::dashboard.edit', compact('product', 'categories'));
     }
 
-    public function update(Product $product, Request $request)
+    public function update(Product $product, ProductRequest $request)
     {
-        $this->handleImage($product, $request);
+
+        if ($request->file('image')) {
+            $this->handleImage($product, $request);
+        }
 
         $product->update($request->input());
 
         $product->categories()->sync($request->input('category_list'));
 
-        return redirect('dashboard/product');
+        return redirect('dashboard/product')->with('successMessage', 'Sikeres termék módosítás');
     }
 
     public function destroy(Product $product)
@@ -62,7 +71,7 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect('dashboard/product');
+        return redirect('dashboard/product')->with('successMessage', 'Sikeres termék törlés');
     }
 
     /**

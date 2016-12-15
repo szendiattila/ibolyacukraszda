@@ -56,8 +56,8 @@
                                             {{$product->name}}
                                         </div>
                                         <div class="cake-img">
-                                            {{--<img src="images/product/{{$product->image}}" class="cake-img">--}}
-                                            <img src="" alt="{{$product->name}}">
+                                            <img src="{{$product->image}}" alt="{{$product->name}}" class="cake-img">
+                                            {{--<img src="" alt="{{$product->name}}">--}}
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +75,8 @@
                                         <div class="row">
 
                                             <div class="col-xs-24 col-sm-8">
-                                                <img src="" class="taste-img">
+                                                <img src="{{$category->products->first()->image}}" class="taste-img"
+                                                     alt="{{$category->name}} {{$category->products->first()->name}}">
 
                                             </div>
 
@@ -105,7 +106,7 @@
                                                                 {{ Form::label('radio_'.$productCounter.'_20pcs', '20 szeletes' . $product->_20pcs_price . '.-' ) }}
                                                             </div>
                                                             <p>
-                                                                <button type="button" class="btn btn-info orderButton"
+                                                                <button type="button" class="btn orderButton"
                                                                         data-pcid="{{$productCounter}}"
                                                                         data-pid="{{$product->id}}"
                                                                         data-ptype={{$product->type}}
@@ -157,9 +158,10 @@
 
         <div class="row">
 
-            <div class="col-xs-24 background-white">
+            <div class="col-xs-24 background-white contentCookie">
 
                 <div class="well content-title">Rendelhető édes és sós sütemények</div>
+                <div><a name="suti"></a></div>
                 <div class="col-xs-16 col-xs-offset-4">
                     @foreach($regularProducts as $regularProduct)
                         @php
@@ -191,7 +193,7 @@
                                 {{$regularProduct->unit->order_unit}}
                             </div>
                             <div class="col-xs-24 col-sm-4 col-md-4">
-                                <button type="button" class="btn btn-info orderButton"
+                                <button type="button" class="btn orderButton"
                                         data-pcid="{{$productCounter}}"
                                         data-pid="{{$regularProduct->id}}"
                                         data-ptype="99"
@@ -273,7 +275,7 @@
 
 
             var button =
-                    '<button type="button" class="btn btn-info orderButton" id="megrendelButton" ' +
+                    '<button type="button" class="btn orderButton" id="megrendelButton" ' +
                     'data-pcid="' + pcid + '" ' +
                     'data-pid="' + pid + '" ' +
                     'data-ptype="0" ' +
@@ -287,7 +289,7 @@
 
             var template = '<div class="col-xs-24"><div class="well cake-item-details">' +
                     '<div class="row">' +
-                    '<div class="col-xs-1"><</div><div class="col-xs-8">' +
+                    '<div class="col-xs-1"></div><div class="col-xs-8">' +
                     image + '</div> ' +
                     '<div class="col-xs-14"> <div class="row"> <div class="col-xs-24"> ' +
                     '<p>' + name + '</p> <p>' + description + '</p> ' +
@@ -301,7 +303,7 @@
                     '<div class="col-xs-12"> ' +
                     button +
                     '</div> </div> </div> </div> </div> ' +
-                    '<div class="col-xs-1">></div> </div> </div></div> ';
+                    '<div class="col-xs-1"></div> </div> </div></div> ';
 
             return template;
         }

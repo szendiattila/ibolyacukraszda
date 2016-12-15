@@ -17,6 +17,7 @@ class CreateRegularProductsTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->integer('price');
+            $table->integer('type')->default(99);
             $table->integer('unit_id')->unsigned();
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
 

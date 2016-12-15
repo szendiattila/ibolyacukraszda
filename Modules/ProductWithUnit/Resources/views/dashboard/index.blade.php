@@ -7,7 +7,16 @@ $modul = 'productwithunit';
 
 @section('content')
     <h1>Sütemények:</h1>
-    <div><a class="btn btn-success" href="{{ url('dashboard/productwithunit/create') }}">Új sütemény hozzáadása</a></div>
+    <div><a class="btn btn-success" href="{{ url('dashboard/productwithunit/create') }}">Új termék hozzáadása</a></div>
+
+    @if(session()->has('successMessage'))
+        <div class="alert alert-success">
+            {{session()->get('successMessage')}}
+        </div>
+        @endif
+        </div>
+
+
     @if(count($products) > 0)
         <table class="table table-responsive">
             <thead>

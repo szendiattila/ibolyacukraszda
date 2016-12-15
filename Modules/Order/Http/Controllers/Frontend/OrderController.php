@@ -81,7 +81,7 @@ class OrderController extends Controller
         Mail::send($template, $data,
             function ($message) use ($email) {
 
-                $message->from('csaccount04@gmail.com', 'Ibolya cukrászda');
+                $message->from('probaibolya@gmail.com', 'Ibolya cukrászda');
 
                 $message->subject('Rendelés');
 

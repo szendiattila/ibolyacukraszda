@@ -1,26 +1,63 @@
-@media (min-width: 768px) {
-    .navbar .navbar-nav {
-        display: inline-block;
-        float: none;
-        vertical-align: top;
+#mainMenuContainer .nav.navbar-nav {
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}
+
+@media (max-width: 767px) {
+
+    #mainMenuContainer {
+        text-align: left;
+
     }
 
     .navbar .navbar-collapse {
         text-align: center;
     }
+
+    /* navbar */
+    .navbar-default {
+        background-color: #ffffff;
+        border-color: #ffffff;
+        align: left;
+    }
+
 }
 
+@media (min-width: 768px) {
+    /* navbar */
+    .navbar-default {
+        background-color: #ffffff;
+        border-color: #ffffff;
+        text-align: center;
+    }
+
+    #mainMenuContainer {
+        text-align: center;
+
+    }
+}
 /* navbar */
 .navbar-default {
     background-color: #ffffff;
     border-color: #ffffff;
+    text-align: center;
 }
 
 .navbar-default .navbar-nav > li > a {
     color: black;
-    border-bottom: 1px solid transparent;
+    border-bottom: 2px solid transparent;
     padding: 0; /*removing spacing*/
     margin: 14px; /*add spacing*/
+
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+    border-bottom: 2px solid mediumpurple;
+}
+
+.navbar-default .navbar-nav > li > a:active {
+    border-bottom: 2px solid mediumpurple;
 }
 
 body {
@@ -30,9 +67,6 @@ body {
     background-size: 100%;
     /*background-attachment: fixed;*/
 }
-
-
-
 
 
 .header {
@@ -144,8 +178,9 @@ body {
     background-color: white;
     padding-top: 10px;
     padding-bottom: 5px;
-    padding-right: 5px;
-    padding-left: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 15px;
 }
 
 .footer-container {
@@ -196,4 +231,59 @@ body {
 
 .modal-price {
     display: inline;
+}
+
+.btnOrder {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.orderButton {
+    background: mediumpurple;
+    color: white;
+    border: 1px solid white;
+}
+
+.orderButton:hover {
+    background: #BA55D3;
+    border: 1px solid white;
+}
+
+.orderButton:active {
+    background: mediumpurple;
+    border: 1px solid white;
+}
+
+.contentCookie {
+    padding: 10px 10px 0;
+    margin-bottom: 10px;
+}
+
+.footerLink {
+    color: black;
+}
+
+.footerLink:hover {
+    color: mediumpurple;
+    text-decoration: none;
+}
+
+.footerIcon {
+    display: inline;
+    color: mediumpurple;
+}
+
+.contact {
+    background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.aboutUs {
+    background: white;
+    padding: 10px;
+    margin-bottom: 10px;
 }

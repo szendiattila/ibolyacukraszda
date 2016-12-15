@@ -1,3 +1,6 @@
+@include('dashboard::_partials._errors')
+
+
 <div class="form-group">
     {{ Form::label('name', 'Termék neve') }}
     {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'A torta megnevezése...', 'required']) }}
