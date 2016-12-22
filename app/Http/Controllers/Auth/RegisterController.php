@@ -62,8 +62,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return null;
-//
+        return "Nincs regisztráció!";
 //        return User::create([
 //            'name' => $data['name'],
 //            'email' => $data['email'],

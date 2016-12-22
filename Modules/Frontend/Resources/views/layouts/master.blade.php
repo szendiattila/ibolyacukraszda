@@ -18,24 +18,33 @@
 </head>
 <body>
 
+<div id="wrap">
+    <div class="container">
 
-<div class="container">
+        <div class="row">
+            <div class="col-xs-24 header"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-24">
 
-    <div class="row">
-        <div class="col-xs-24 header"></div>
+                @include('frontend::layouts.partials._navbar')
+
+            </div>
+
+
+            <div class="col-xs-24">
+                @yield('content')
+            </div>
+
+
+        </div>
+
     </div>
-    <div class="row">
-        <div class="col-xs-24">
+</div>
 
-            @include('frontend::layouts.partials._navbar')
+<div id="footer">
 
-        </div>
-
-
-        <div class="col-xs-24">
-            @yield('content')
-        </div>
-
+    <div class="container">
         <div class="row">
             <div class="col-xs-24">
                 <div class="footer">
@@ -80,10 +89,11 @@
 
             </div>
         </div>
-
     </div>
 
+
 </div>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>

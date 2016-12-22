@@ -38,4 +38,4 @@
 
 {{ Form::close() }}
 
-@include('dashboard::_errors')
+@include('dashboard::_partials._errors')

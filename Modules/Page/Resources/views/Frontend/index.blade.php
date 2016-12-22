@@ -5,7 +5,16 @@
 @section('description', $page->description)
 @section('content')
 
-    <h1>{{ $page->name }}</h1>
+    <div class="row">
 
-    {!! $page->content !!}
+        <div class="col-xs-24 editable-content mb20">
+
+            <h1>{{$page->name }}</h1>
+
+
+            {!! html_entity_decode($page->content) !!}
+
+
+        </div>
+    </div>
 @stop
