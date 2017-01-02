@@ -1,9 +1,9 @@
-{!! Form::open(['method' => 'DELETE','route' => [$modul.'.destroy', $row_id]]) !!}
+{!! Form::open(['method' => 'DELETE','route' => [$modul.'.destroy', $row_id], 'id' => 'formId_'.$row_id]) !!}
 <div class="btn-group" rule="group">
 
     <button name='deleteBtn'
-            value='1'
-            class='btn btn-danger'
+            value='{{$row_id}}'
+            class='btn btn-danger orderDelete'
             data-toggle='tooltip'
             title='Törlés'>
         <i class="fa fa-trash" aria-hidden="true"></i>

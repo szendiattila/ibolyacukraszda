@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Order\Entities\Status;
 
-class OrderDatabaseSeeder extends Seeder
+class StatusTableSeederTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class OrderDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-         //$this->call("StatusTableSeeder");
+        // $this->call("OthersTableSeeder");
 
         Status::create([
             'name' => 'Fogadott'
@@ -39,6 +39,7 @@ class OrderDatabaseSeeder extends Seeder
         Status::create([
             'name' => 'Lemondva'
         ]);
+
 
     }
 }

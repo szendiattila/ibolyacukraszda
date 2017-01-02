@@ -22,6 +22,8 @@ class CreateOrdersTable extends Migration
             $table->tinyInteger('pType');
             $table->integer('quantity');
             $table->integer('amount');
+            $table->integer('status_id')->unsigned()->index();
+            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
 
             $table->timestamps();
         });

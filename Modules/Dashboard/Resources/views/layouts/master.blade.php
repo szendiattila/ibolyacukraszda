@@ -23,7 +23,7 @@
                 'csrfToken' => csrf_token(),
         ]); ?>
     </script>
-    @yield('style')
+    @yield('styles')
 </head>
 <body>
     @include('dashboard::layouts.partials._navbar')
@@ -34,6 +34,6 @@
 
 <!-- Scripts -->
 <script src="/js/app.js"></script>
-@yield('script')
+@yield('scripts')
 </body>
 </html>

@@ -4,9 +4,11 @@ namespace Modules\Order\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Modules\Order\Entities\Order;
+use Modules\Order\Entities\Status;
 use Modules\Product\Entities\Product;
 
 class OrderController extends Controller
@@ -17,19 +19,26 @@ class OrderController extends Controller
      */
     public function index()
     {
+/*
+        $orders1 = Order::with('products', 'products.categories')->where('pType', '<=', 10)->orderBy('status_id')->get();
+        $orders2 = Order::with('regularProducts', 'regularProducts.unit')->where('pType', '>', 10)->orderBy('status_id')->get();
 
-        $orders1 = Order::with('products', 'products.categories')->where('pType', '<=', 10)->get();
-        $orders2 = Order::with('regularProducts', 'regularProducts.unit')->where('pType', '>', 10)->get();
-
+        $statuses = Status::pluck('name', 'id');
 
         $orders = $orders1->merge($orders2);
-        $orders->sortByDesc('created_at');
+
+        $orders = $orders->sortByDesc(function($order){
+
+            return $order->id;
+
+        });
+*/
+        $statuses = Status::pluck('name', 'id');
+
+        $orders = Order::with('products','products.categories','regularProducts.unit')->orderBy('status_id')->orderBy('id','desc')->paginate(5);
 
 
-        //dd($orders->values()->all());
-
-
-        return view('order::dashboard.index', compact('orders'));
+        return view('order::dashboard.index', compact('orders', 'statuses'));
     }
 
     /**
@@ -76,7 +85,7 @@ class OrderController extends Controller
     {
         $order = Order::find($id);
 
-        if(isset($order) ){
+        if (isset($order)) {
             $delete = $order->delete();
         }
 
@@ -84,6 +93,19 @@ class OrderController extends Controller
         $mess = ($delete) ? "<div class='alert alert-success'>Sikeres törlés</div>" : "<div class='alert alert-warning'>Nem sikerült törölni.</div>";
 
         return redirect()->back()->with('orderMessage', $mess);
+
+    }
+
+    function changeOrderStatus(Request $request)
+    {
+        $order = Order::find($request->get('orderId'));
+        $status = Status::find($request->get('statusId'));
+
+        $order->status_id = $status->id;
+        $order->save();
+
+
+        return "OK";
 
     }
 }

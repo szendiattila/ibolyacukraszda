@@ -77,26 +77,6 @@
                     <div id="modal-order-description"></div>
                 </div>
 
-                <div class="alert-success col-xs-24" style="display: none" id="modal-order-succes">
-
-                    <div class="col-xs-16 col-xs-offset-4">
-
-                        Köszönjük rendelését!<br>
-                        Munkatársunk fel fogja venni önnel a kapcsolatot.
-
-                    </div>
-
-                </div>
-
-                <div class="alert-warning col-xs-24" style="display: none" id="modal-order-error">
-
-                    <div class="col-xs-16 col-xs-offset-4">
-                        Hiba történt a rendelés közben!<br>
-                        Kérem, próbálja meg később.
-                    </div>
-
-                </div>
-
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" data-dismiss="modal" id="modal-order-btn">Rendelés

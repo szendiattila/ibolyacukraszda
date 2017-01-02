@@ -44,7 +44,8 @@ class OrderController extends Controller
             'product' => $product->id,
             'pType' => $pType,
             'quantity' => $quantity,
-            'amount' => $amount
+            'amount' => $amount,
+            'status_id' => 1
         ]);
 
 
@@ -77,7 +78,7 @@ class OrderController extends Controller
 
     private function sendMail($template, $email, $data)
     {
-
+/*
         Mail::send($template, $data,
             function ($message) use ($email) {
 
@@ -88,7 +89,7 @@ class OrderController extends Controller
                 $message->to($email);
 
             });
-
+*/
         // return Mail::to($email)->send(new $template($email,$name,$comment, $product, $pType, $quantity, $amount));
 
     }

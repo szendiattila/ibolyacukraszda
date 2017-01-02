@@ -4,6 +4,8 @@ Route::group(['middleware' => ['web', 'auth'], 'prefix' => 'dashboard', 'namespa
     Route::resource('/order', 'OrderController',
         ['except' => ['create', 'store', 'update', 'show', 'edit']]
     );
+
+    Route::post('order-status-change-ajax', 'OrderController@changeOrderStatus');
 });
 
 Route::group(['middleware' => 'web', 'namespace' => 'Modules\Order\Http\Controllers\Frontend'], function () {

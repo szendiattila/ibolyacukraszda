@@ -13,6 +13,6 @@ class PageController extends Controller
     {
         $page = Page::whereUrl($slug)->first();
 
-        return view('page::frontend.index', compact('page'));
+        return view('page::Frontend.index', compact('page'));
     }
 }

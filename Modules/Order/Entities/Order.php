@@ -8,7 +8,7 @@ use Modules\ProductWithUnit\Entities\RegularProduct;
 
 class Order extends Model
 {
-    protected $fillable = ['email', 'name', 'phone', 'comment', 'product', 'pType', 'quantity', 'amount'];
+    protected $fillable = ['email', 'name', 'phone', 'comment', 'product', 'pType', 'quantity', 'amount','status_id'];
 
 
     public function products()
@@ -19,6 +19,11 @@ class Order extends Model
     public function regularProducts()
     {
         return $this->belongsToMany(RegularProduct::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 
 

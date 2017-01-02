@@ -2,7 +2,7 @@
 @include('shared._sweetalert2')
 
 @php
-    $productCounter = 1;
+    $productCounter = 0;
 @endphp
 @section('content')
 
@@ -30,28 +30,43 @@
                                     $productCounter++
                                 @endphp
                                 <div class="col-xxs-24 col-xs-12 col-sm-8 col-md-6 col-lg-4 cake-item"
-                                     id="product-{{$product->id}}" data-id="{{ $key+1 }}">
+                                     id="product-{{$product->id}}" data-id="{{ $key+1 }}"
 
-                                    <input type="hidden" id="product-{{$product->id}}id_{{$key+1}}"
-                                           value="{{$product->id}}">
-                                    <input type="hidden" id="product-{{$product->id}}category_{{$key+1}}"
-                                           value="{{$category->name}}">
-                                    <input type="hidden" id="product-{{$product->id}}cid_{{$key+1}}"
-                                           value="{{$productCounter}}">
-                                    <input type="hidden" id="product-{{$product->id}}image_{{$key+1}}"
-                                           value="{{$product->image}}">
-                                    <input type="hidden" id="product-{{$product->id}}name_{{$key+1}}"
-                                           value="{{$product->name}}">
-                                    <input type="hidden" id="product-{{$product->id}}description_{{$key+1}}"
-                                           value="{{$product->description}}">
-                                    <input type="hidden" id="product-{{$product->id}}_10pcs_price_{{$key+1}}"
-                                           value="{{$product->_10pcs_price}}">
-                                    <input type="hidden" id="product-{{$product->id}}_20pcs_price_{{$key+1}}"
-                                           value="{{$product->_20pcs_price}}">
-                                    <input type="hidden" id="choiced-cake-quantity-{{$key+1}}"
-                                           value="10">
+                                     data-pcid="{{$productCounter}}"
+                                     data-pid="{{$product->id}}"
+                                     data-ptype="{{$product->type}}"
+                                     data-pname="{{$product->name}}"
+                                     data-p10pcsprice="{{$product->_10pcs_price}}"
+                                     data-p20pcsprice="{{$product->_20pcs_price}}"
+                                     data-pdescription="{{$product->description}}"
+                                     data-pimage="{{$product->image}}"
+                                     data-categoryid="{{$category->id}}"
+                                     data-category="{{$category->name}}"
+                                     data-categorysize="{{count($category->products)}}"
+                                     data-productnumberincategory="{{$key+1}}"
+                                >
+                                    {{--
+                                        <input type="hidden" id="product-{{$product->id}}id_{{$key+1}}"
+                                               value="{{$product->id}}">
+                                        <input type="hidden" id="product-{{$product->id}}category_{{$key+1}}"
+                                               value="{{$category->name}}">
+                                        <input type="hidden" id="product-{{$product->id}}cid_{{$key+1}}"
+                                               value="{{$productCounter}}">
+                                        <input type="hidden" id="product-{{$product->id}}image_{{$key+1}}"
+                                               value="{{$product->image}}">
+                                        <input type="hidden" id="product-{{$product->id}}name_{{$key+1}}"
+                                               value="{{$product->name}}">
+                                        <input type="hidden" id="product-{{$product->id}}description_{{$key+1}}"
+                                               value="{{$product->description}}">
+                                        <input type="hidden" id="product-{{$product->id}}_10pcs_price_{{$key+1}}"
+                                               value="{{$product->_10pcs_price}}">
+                                        <input type="hidden" id="product-{{$product->id}}_20pcs_price_{{$key+1}}"
+                                               value="{{$product->_20pcs_price}}">
+                                        <input type="hidden" id="choiced-cake-quantity-{{$key+1}}"
+                                               value="10">
+                                    --}}
 
-                                    <div class="cake">
+                                    <div class="cake" data-cakeid="{{$productCounter}}">
                                         <div class="cake-header">
                                             {{$product->name}}
                                         </div>
@@ -109,7 +124,7 @@
                                                                 <button type="button" class="btn orderButton"
                                                                         data-pcid="{{$productCounter}}"
                                                                         data-pid="{{$product->id}}"
-                                                                        data-ptype={{$product->type}}
+                                                                        data-ptype="{{$product->type}}"
                                                                         data-pname="{{$product->name}}"
                                                                         data-p10pcsprice="{{$product->_10pcs_price}}"
                                                                         data-p20pcsprice="{{$product->_20pcs_price}}"
@@ -224,6 +239,7 @@
 
 
         @include('frontend::frontend.partials._product_modal')
+
     @endif
 @endsection
 @section('scripts')
@@ -255,23 +271,79 @@
                 return 6;
         }
 
-        function getCakeDescriptionTemplate(id, ob) {
+        function getCakeDescriptionTemplate(ob) {
 
-            var pre = "#" + $(ob).attr("id");
+            //var pre = "#" + $(ob).attr("id");
 
-            var counter = $(pre + 'counter_' + id).val();
+            //var counter = $(pre + 'counter_' + id).val();
 
-            console.log(counter);
+            //console.log(counter);
+            /*
+             var pcid = $(pre + 'cid_' + id).val();
+             var pid = $(pre + 'id_' + id).val();
+             var name = $(pre + 'name_' + id).val();
+             var img = $(pre + 'image_' + id).val();
+             var image = $(ob).find(".cake-img").html();
+             var description = $(pre + 'description_' + id).val();
+             var _10pcs_price = $(pre + '_10pcs_price_' + id).val();
+             var _20pcs_price = $(pre + '_20pcs_price_' + id).val();
+             var category = $(pre + 'category_' + id).val();
+             */
 
-            var pcid = $(pre + 'cid_' + id).val();
-            var pid = $(pre + 'id_' + id).val();
-            var name = $(pre + 'name_' + id).val();
-            var img = $(pre + 'image_' + id).val();
-            var image = $(ob).find(".cake-img").html();
-            var description = $(pre + 'description_' + id).val();
-            var _10pcs_price = $(pre + '_10pcs_price_' + id).val();
-            var _20pcs_price = $(pre + '_20pcs_price_' + id).val();
-            var category = $(pre + 'category_' + id).val();
+            var pcid = ob.attr("data-pcid");
+            var pid = ob.attr('data-pid');
+            var name = ob.attr('data-pname');
+            var img = ob.attr('data-pimage');
+            var image = ob.attr('data-pimage');
+            var description = ob.attr('data-pdescription');
+            var _10pcs_price = ob.attr('data-p10pcsprice');
+            var _20pcs_price = ob.attr('data-p20pcsprice');
+            var categoryId = ob.attr('data-categoryid');
+            var category = ob.attr('data-category');
+            var categorySize = ob.attr('data-categorysize');
+            var productNumberInCategory = ob.attr('data-productnumberincategory');
+
+
+            //var firstInCategory = $(".cake-item[data-categoryid=" + categoryId + "][data-productnumberincategory=1]");
+            //console.log('first pcid in category: ');
+            //console.dir(firstInCategory);
+
+
+            var prevProductCounterId = 1;
+            if ((parseInt(productNumberInCategory) - 1) == 0) {
+                var prevIdObject = $(".cake-item[data-categoryid=" + categoryId + "][data-productnumberincategory=" + categorySize + "]");
+                prevProductCounterId = prevIdObject.attr('data-pcid');
+                //console.log('prev-> minimum to N: ' + prevProductCounterId);
+                console.log('prev -> jump on last category item ->' + prevProductCounterId);
+                //console.log('nav buttons');
+                //var axa = prevProductCounterId.attr('data-pcid');
+                //console.log('prev pcid: ' + prevProductCounterId.attr('data-pcid'));
+                //console.log('axa:' + axa);
+            }
+            else {
+                prevProductCounterId = (parseInt(pcid) - 1);
+                console.log('prev-> N -1: ' + prevProductCounterId);
+            }
+
+
+            var nextProductCounterId = 1;
+            if ((parseInt(productNumberInCategory) + 1) > categorySize) {
+                var nextIdObject = $(".cake-item[data-categoryid=" + categoryId + "][data-productnumberincategory=1]");
+
+                nextProductCounterId = nextIdObject.attr('data-pcid');
+                //console.log('prev-> minimum to N: ' + prevProductCounterId);
+                console.log('next -> jump on first category item ->' + nextProductCounterId);
+
+/// /           console.log('next-> maximum to 1: ' + nextProductCounterId);
+
+                // console.log('nav buttons');
+                // console.dir(nextProductCounterId);
+                // console.log('next pcid: '+ nextProductCounterId.attr('id'));
+            }
+            else {
+                nextProductCounterId = (parseInt(pcid) + 1);
+                console.log('next-> n + 1: ' + nextProductCounterId);
+            }
 
 
             var button =
@@ -287,25 +359,40 @@
                     'data-category="' + category + '" ' +
                     '>Megrendelem</button>';
 
-            var template = '<div class="col-xs-24"><div class="well cake-item-details">' +
+            var prevButton = '<button type="button" class="btn navCakeButton" ' +
+                    'data-pcid="' + prevProductCounterId + '" ' +
+                    '>Prev</button>';
+
+            var nextButton = '<button type="button" class="btn navCakeButton" ' +
+                    'data-pcid="' + nextProductCounterId + '" ' +
+                    '>Next</button>';
+
+            var template = '<div class="col-xs-24" id="cakeItemDetailsDivScroolHere"><div class="well cake-item-details">' +
                     '<div class="row">' +
-                    '<div class="col-xs-1"></div><div class="col-xs-8">' +
-                    image + '</div> ' +
+                    '<div class="col-xs-1">' + prevButton + '</div><div class="col-xs-8"><img src="' +
+                    image + '" alt="' + name + '"/></div> ' +
                     '<div class="col-xs-14"> <div class="row"> <div class="col-xs-24"> ' +
-                    '<p>' + name + '</p> <p>' + description + '</p> ' +
+                    '<h1>' + name + '</h1> <p>' + description + '</p> ' +
                     '</div> </div> ' +
                     '<div class="row"> <div class="col-xs-24"> ' +
                     '<div class="row"> ' +
                     '<div class="col-xs-12"> ' +
-                    '<p><input type="radio" checked name="_pcs_price_order' + id + '" id="_10_pcs_price_order' + id + '" onchange="choicedCakeSize(10)"> <label for="_10_pcs_price_order' + id + '">10 szeletes:' + _10pcs_price + '.-</p> ' +
-                    '<p><input type="radio" name="_pcs_price_order' + id + '" id="_20_pcs_price_order' + id + '" onchange="choicedCakeSize(20)"> <label for="_20_pcs_price_order' + id + '">20 szeletes:' + _20pcs_price + '.-</p> ' +
+                    '<p><input type="radio" checked name="_pcs_price_order' + pid + '" id="_10_pcs_price_order' + pid + '" onchange="choicedCakeSize(10)"> <label for="_10_pcs_price_order' + pid + '">10 szeletes:' + _10pcs_price + '.-</p> ' +
+                    '<p><input type="radio" name="_pcs_price_order' + pid + '" id="_20_pcs_price_order' + pid + '" onchange="choicedCakeSize(20)"> <label for="_20_pcs_price_order' + pid + '">20 szeletes:' + _20pcs_price + '.-</p> ' +
                     '</div> ' +
                     '<div class="col-xs-12"> ' +
                     button +
                     '</div> </div> </div> </div> </div> ' +
-                    '<div class="col-xs-1"></div> </div> </div></div> ';
+                    '<div class="col-xs-1">' + nextButton + '</div></div> </div></div> ';
 
             return template;
+        }
+
+        var scrollToElement = function (el, ms, offset) {
+            var speed = (ms) ? ms : 600;
+            $('html,body').animate({
+                scrollTop: $(el).offset().top + offset
+            }, speed);
         }
 
         function choicedCakeSize(value) {
@@ -377,16 +464,31 @@
 
             $(".cake-item").click(function () {
 
-               // $("#myModal").on("hidden.bs.modal", function () {}
+                console.log('cakdeDetail function');
+
+                cakeDetail($(this));
+
+            });
+
+
+            function cakeDetail(obj) {
+                // $("#myModal").on("hidden.bs.modal", function () {}
+
 
                 $('#radio_cake_pcs').val(10);
 
+                //console.log('pcid: ' + obj.attr('data-pcid'));
 
+                //$(".cake[data-cakeid="+ obj.attr("data-pcid") +"]").css("border-color: green");
 
                 $(".cake-item-details").remove();
-                var di = $(this).attr("data-id");
+                $(".navCakeButton").remove();
+                $("#cakeItemDetailsDivScroolHere").remove();
+                var di = obj.attr("data-id");
 
-                var template = getCakeDescriptionTemplate(di, this);
+
+                var template = getCakeDescriptionTemplate(obj);
+
 
                 console.log("data-id:" + di);
                 // var cake_datas = di.split('_');
@@ -397,20 +499,40 @@
                 console.log('number of cakes: ' + numberOfCakes);
 
                 var last = Math.ceil(di / numberOfCakes) * numberOfCakes;
-                var max = $(this).parent().find(".cake-item").last().attr("data-id");
+                // var max = $(this).parent().find(".cake-item").last().attr("data-id");
+                var max = obj.parent().find(".cake-item").last().attr("data-id");
                 if (last > max) {
                     last = max;
                 }
-                $(this).parent().find(".cake-item[data-id=" + last + "]").after(template);
 
+
+                obj.parent().find(".cake-item[data-id=" + last + "]").after(template);
+//var et = obj.parent().find(".cake-item[data-id=" + last + "]").after(template);
+//console.dir(et);
+                //              return false;
 
                 $("#megrendelButton").click(function () {
 
                     // console.log("hurrá rákkat a " + $(this).val() + " értékű buttonra");
-                    orderProduct(this);
+                    orderProduct(obj);
                 });
 
-            });
+                $(".navCakeButton").click(function () {
+                    console.log('navCakeButton klik');
+                    //console.dir(this);
+                    var ob = $(".cake-item[data-pcid=" + $(this).attr('data-pcid') + "]");
+                    console.dir(ob);
+                    cakeDetail($(ob));
+
+                });
+
+                /*
+                 $('html, body').animate({
+                 scrollTop: $("#cakeItemDetailsDivScroolHere").offset().top
+                 }, 500);
+                 */
+                scrollToElement('#cakeItemDetailsDivScroolHere', 600, -300);
+            }
 
 
             $('#modal-order-btn').on('click', function () {
@@ -422,14 +544,35 @@
                             console.log('rendelés sikeressége: ' + successOrder);
 
 
+                            $('#myModal').modal('hide');
+                            countDown = 5;
+                            //$('#progressBarId').attr('aria-valuenow', 5).css('width', '100%');
+
+
                             if (successOrder == 1) {
 
-                                $('#modal-order-succes').show();
-                            }
-                            else {
-                                $('#modal-order-error').show();
+                                //$('#modal-order-succes').show();
+
+                                orderFeedback(
+                                        true,
+                                        "Sikeres rendelés",
+                                        "Köszönjük rendelését!<br>Munkatársunk fel fogja venni önnel a kapcsolatot!<br><br>(Az ablak hamarosan bezárul.)"
+                                );
 
                             }
+                            else {
+
+                                //$('#modal-order-error').show();
+
+                                orderFeedback(
+                                        false,
+                                        "Hiba történt!",
+                                "Nem sikerült rögzitení a rendelését!<br><br>(Az ablak hamarosan bezárul.)"
+                            );
+
+                            }
+
+                            //$('#order_feedback_modal').modal('show');
 
 
                         }
@@ -450,6 +593,45 @@
 
         });
 
+        function orderFeedback(success, titleM, message) {
+            swal({
+                type: (success) ? "success" : "error",
+                title: titleM,
+                text: message,
+                timer: 5000,
+                showConfirmButton: true,
+            });
+
+        }
+
+        /*
+         var countDownOrderFeedback = 5;
+
+         function countUntilCloseOrderModal() {
+         var elem = $("#progressBarId");
+
+         elem.attr('aria-valuenow', countDownOrderFeedback).css('width', (countDown * 20) + '%');
+
+         if (countDownOrderFeedback == 0) {
+
+         console.log('final step close modal');
+         $('#order_feedback_modal').modal('hide');
+
+
+         return false;
+         }
+         else {
+         countDownOrderFeedback--;
+
+         setInterval(
+         countUntilCloseOrderModal()
+         , 1000);
+         }
+         console.log('progressbar: ' + countDownOrderFeedback + ' mp');
+
+
+         }
+         */
 
         function modalInit(product, inp, orderDescription) {
 
@@ -564,9 +746,6 @@
         $(function () {
 
 
-
-
-
         });
 
         function validateInputs() {
@@ -643,8 +822,6 @@
 
             console.log('rendelni kívánt mennyiség: ' + _quantity);
             console.log('send order: ' + result);
-
-
 
 
             $.ajax({
