@@ -282,6 +282,12 @@ body {
     color: mediumpurple;
 }
 
+.pagerDiv {
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+ }
+
 .contact {
     background: white;
     padding: 10px;

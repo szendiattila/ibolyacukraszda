@@ -39,7 +39,7 @@
                                      data-p10pcsprice="{{$product->_10pcs_price}}"
                                      data-p20pcsprice="{{$product->_20pcs_price}}"
                                      data-pdescription="{{$product->description}}"
-                                     data-pimage="{{$product->image}}"
+                                     data-pimage="images/product/{{$product->image}}"
                                      data-categoryid="{{$category->id}}"
                                      data-category="{{$category->name}}"
                                      data-categorysize="{{count($category->products)}}"
@@ -71,7 +71,7 @@
                                             {{$product->name}}
                                         </div>
                                         <div class="cake-img">
-                                            <img src="{{$product->image}}" alt="{{$product->name}}" class="cake-img">
+                                            <img src="images/product/tn-{{$product->image}}" alt="{{$product->name}}" class="cake-img">
                                             {{--<img src="" alt="{{$product->name}}">--}}
                                         </div>
                                     </div>
@@ -90,7 +90,7 @@
                                         <div class="row">
 
                                             <div class="col-xs-24 col-sm-8">
-                                                <img src="{{$category->products->first()->image}}" class="taste-img"
+                                                <img src="images/product/{{$category->products->first()->image}}" class="taste-img"
                                                      alt="{{$category->name}} {{$category->products->first()->name}}">
 
                                             </div>
@@ -361,15 +361,17 @@
 
             var prevButton = '<button type="button" class="btn navCakeButton" ' +
                     'data-pcid="' + prevProductCounterId + '" ' +
-                    '>Prev</button>';
+                    '><i class="fa fa-angle-left fa-5x footerIcon" aria-hidden="true" data-pcid="' + prevProductCounterId + '" ></i></button>';
+
+           // var prevButton = '<a href=""><i class="fa fa-angle-left fa-5x pagerIcon" aria-hidden="true" data-pcid="' + prevProductCounterId + '" ></i></a>';
 
             var nextButton = '<button type="button" class="btn navCakeButton" ' +
                     'data-pcid="' + nextProductCounterId + '" ' +
-                    '>Next</button>';
+                    '><i class="fa fa-angle-right fa-5x footerIcon" aria-hidden="true" data-pcid="' + prevProductCounterId + '" ></i></button>';
 
             var template = '<div class="col-xs-24" id="cakeItemDetailsDivScroolHere"><div class="well cake-item-details">' +
                     '<div class="row">' +
-                    '<div class="col-xs-1">' + prevButton + '</div><div class="col-xs-8"><img src="' +
+                    '<div class="col-xs-1 pagerDiv">' + prevButton + '</div><div class="col-xs-8"><img src="' +
                     image + '" alt="' + name + '"/></div> ' +
                     '<div class="col-xs-14"> <div class="row"> <div class="col-xs-24"> ' +
                     '<h1>' + name + '</h1> <p>' + description + '</p> ' +

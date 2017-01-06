@@ -53,7 +53,7 @@
                         <div class="col-xs-16 col-xs-offset-4">
                             <div class="col-sx-24 col-sm-12 col-md-12">
                                 <i class="fa fa-facebook footerIcon" aria-hidden="true"></i>
-                                <a href="https://hu-hu.facebook.com/Ibolya-Cukr%C3%A1szda-1628047964084089/"
+                                <a href="https://www.facebook.com/Ibolya-Cukr%C3%A1szda-267067839996337/"
                                    target="_blank" class="footerLink">Kövess minket
                                     facebook-on</a>
                             </div>
