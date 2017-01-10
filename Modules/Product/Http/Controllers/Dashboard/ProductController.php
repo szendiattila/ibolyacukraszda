@@ -27,11 +27,13 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        $categoryId = $request->get('category_list', [0]);
+        $categoryId = $request->input('category_list', 1);
 
         $type = Category::select('type')->whereId($categoryId)->pluck('type')->first();
 
-        $request->request->add('type', $type);
+
+        $request->request->add(['type' => $type]);
+
 
         $imageName = FileUploadController::storeImage($request, 'image', 'product', true, 200, 200);
 

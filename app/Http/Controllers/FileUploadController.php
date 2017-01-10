@@ -7,7 +7,7 @@ use Image;
 
 class FileUploadController extends Controller
 {
-    public static function storeImage(Request $request, $fileName, $folderName, $thumbFile = false, $thumbWidth = 90, $thumbHeight = 90)
+    public static function storeImage(Request $request, $fileName, $folderName, $thumbFile = false, $thumbWidth = 200, $thumbHeight = 200)
     {
         $file = Image::make($request->file($fileName)->getRealPath());
 
